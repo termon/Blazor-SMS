@@ -1,0 +1,41 @@
+@page "/students/view/{Id:int}"
+@inject NavigationManager NavigationManager
+@inject StudentService Service
+
+@if (student == null)
+{
+    <p>Loading ....</p>
+}
+else
+{
+    <div class="card mt-4" style="width: 18rem;">
+        <i class="card-img-top text-center material-icons">face</i>
+        <h5 class="card-title text-center mt-3">@student.Name </h5>
+        <div class="card-body">
+            <h5 class="card-title text-center">@student.Email</h5>
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item">@student.Course</li>
+            <li class="list-group-item">@student.Age</li>
+            </ul>
+        </div>
+        <div class="card-footer mt-2">
+            <a href=@($"students/update/{student.Id}") class="btn btn-primary btn-sm mr-2" >Update</a>
+            <a href=@($"students/delete/{student.Id}") class="btn btn-danger btn-sm  mr-2">Delete</a>  
+            <a href=@($"students") class="btn btn-secondary btn-sm">Student List</a> 
+        </div>
+    </div>    
+}
+
+
+@code {  
+    [Parameter]  
+    public int Id { get; set; }
+
+    private Student student; 
+
+    protected override async Task OnInitializedAsync()
+    {           
+        student = await Service.GetStudent(Id);        
+    } 
+
+}

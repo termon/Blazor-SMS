@@ -1,0 +1,53 @@
+@page "/students"
+@inject StudentService api
+@inject NavigationManager NavigationManager
+
+<h3>Registered Students</h3>
+
+
+<AuthorizeView Roles="Admin">
+    <button @onclick="AddStudent" class="btn btn-primary btn-sm mr-2 mb-2 mt-2"> 
+        <span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Student
+    </button>
+</AuthorizeView>
+
+@if (students == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        @foreach (var s in students)
+        {
+            <StudentCard Student="@s" OnDelete="()=>DeleteStudent(s.Id)" OnUpdate="()=>UpdateStudent(s.Id)" /> 
+        }
+    </div>
+}
+
+@code {
+
+    private IList<Student> students = new List<Student>();
+   
+    protected override async Task OnInitializedAsync()
+    {    
+        Console.WriteLine("Getting students from api");       
+        students = await api.GetStudents();        
+    } 
+
+    private void AddStudent()
+    {
+        NavigationManager.NavigateTo("students/add");
+    }
+
+    private void DeleteStudent(int id)
+    {        
+        NavigationManager.NavigateTo($"students/delete/{id}");
+    }
+    
+    private void UpdateStudent(int id)
+    {        
+        NavigationManager.NavigateTo($"students/update/{id}");
+    }
+    
+}

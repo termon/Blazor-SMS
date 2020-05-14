@@ -1,0 +1,14 @@
+
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@* AMC - Added this component on 4-05-2020 *@
+@* https://docs.microsoft.com/en-gb/aspnet/core/security/blazor/webassembly/standalone-with-authentication-library?view=aspnetcore-3.1 *@
+
+@code {
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo($"user/login?returnUrl=" +
+            Uri.EscapeDataString(Navigation.Uri));
+    }
+}

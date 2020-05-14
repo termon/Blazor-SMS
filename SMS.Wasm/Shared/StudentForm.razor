@@ -1,0 +1,58 @@
+
+<EditForm Model="@dto" OnValidSubmit="Save">
+    @* <DataAnnotationsValidator /> *@
+    <FluentValidator/>
+    
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <InputText id="Name" @bind-Value="dto.Name" class="form-control" />
+        <ValidationMessage For="@(() => dto.Name)" />
+    </div>
+    
+    <div class="form-group">
+        <label for="Email">Course</label>
+        <InputText id="Course" @bind-Value="dto.Course" class="form-control" />
+        <ValidationMessage For="@(() => dto.Course)"/>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-8">
+            <label for="Email">Email</label>
+            <InputText id="Email" @bind-Value="dto.Email" class="form-control" />
+            <ValidationMessage For="@(() => dto.Email)"/>
+        </div>
+
+        <div class="form-group col-4">
+            <label for="Age">Age</label>
+            <InputNumber id="Age" @bind-Value="dto.Age" class="form-control" />
+            <ValidationMessage For="@(() => dto.Age)"/>
+        </div>
+    </div>
+
+    <div class="form-group mb-4">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+    </div>
+    
+</EditForm>
+
+@code {
+    [Parameter]
+    public StudentDto dto {get; set;}
+
+    [Parameter] 
+    public EventCallback<StudentDto> OnSave { get; set; }
+    
+    [Parameter] 
+    public EventCallback OnCancel { get; set; }
+    
+    private void Cancel()
+    {
+        OnCancel.InvokeAsync(null);
+    }
+
+    private void Save() {       
+        OnSave.InvokeAsync(dto);       
+    }
+
+}

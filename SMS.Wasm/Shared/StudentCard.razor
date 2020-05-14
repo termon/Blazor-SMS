@@ -1,0 +1,56 @@
+<div class="card m-2" style="width: 18rem;">    
+    <h5 class="card-title text-center mt-3">@Student.Name </h5>
+    <div class="card-body">       
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <span class="oi oi-envelope-closed mr-3" aria-hidden="true"></span> 
+                @Student.Email              
+            </li>
+            <li class="list-group-item">
+                <span class="oi oi-text mr-3" aria-hidden="true"></span>
+                @Student.Course
+            </li>
+            <li class="list-group-item">
+                <span class="oi oi-person mr-3" aria-hidden="true"></span>
+                @Student.Age
+            </li>
+        </ul>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-around">
+            <AuthorizeView Roles="Admin, Manager">   
+                <button @onclick="Update" class="btn btn-info btn-sm">
+                    <span class="oi oi-brush mr-1" aria-hidden="true"></span>
+                    Update
+                </button>
+            </AuthorizeView>
+            <AuthorizeView Roles="Admin">
+                <button @onclick="Delete" class="btn btn-warning btn-sm">
+                    <span class="oi oi-delete mr-1" aria-hidden="true"></span>
+                    Delete
+                </button>           
+            </AuthorizeView>
+        </div>
+    </div>
+</div>    
+
+@code {  
+    [Parameter]  
+    public Student Student { get; set; }
+
+    [Parameter]
+    public EventCallback OnUpdate { get; set; }
+    
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+    
+    private void Update()
+    {
+        OnUpdate.InvokeAsync(null);
+    }
+    private void Delete()
+    {
+        OnDelete.InvokeAsync(null);
+    }
+}
+

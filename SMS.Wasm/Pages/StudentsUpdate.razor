@@ -1,0 +1,40 @@
+@page "/students/update/{Id:int}"
+@inject NavigationManager NavigationManager
+@inject StudentService Service
+
+<h3 class="mt-4 mb-4">Update Student</h3>
+
+@if(dto == null)
+{    <p>Loading student...</p>
+}
+else
+{
+    <StudentForm dto="dto" OnSave="Save" OnCancel="Cancel"></StudentForm>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public StudentDto dto { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {           
+        var student = await Service.GetStudent(Id); 
+        dto = student.ToDto();
+    }
+
+    private async Task Save()
+    {
+        var s = await Service.UpdateStudent(dto); 
+        if (s != null)
+        {
+            NavigationManager.NavigateTo("students");
+        }
+    }
+
+    private void Cancel()
+    {        
+         NavigationManager.NavigateTo("students");
+    }
+}

@@ -1,0 +1,21 @@
+@page "/students/add"
+@inject NavigationManager NavigationManager
+@inject StudentService Service
+
+<h3 class="mt-4 mb-4">Add Student</h3>
+<StudentForm dto="dto" OnSave="OnAddStudent" OnCancel="OnCancelAddStudent" />
+
+@code {
+    public StudentDto dto { get; set; } = new StudentDto();
+
+    private async Task OnAddStudent(StudentDto dto)
+    {
+        var s = await Service.AddStudent(dto);        
+        NavigationManager.NavigateTo("students");
+    }
+
+    private void OnCancelAddStudent()
+    {        
+         NavigationManager.NavigateTo("students");
+    }
+}
