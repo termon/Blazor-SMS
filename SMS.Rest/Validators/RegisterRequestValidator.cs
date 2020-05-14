@@ -17,6 +17,8 @@ namespace SMS.Rest.Validators
             RuleFor(p => p.Password).NotEmpty().MinimumLength(3);
             
             RuleFor(p => p.ConfirmPassword).Equal(p => p.Password);
+
+            RuleFor(p => p.Role).IsInEnum();
             
             // RuleFor(p => p.EmailAddress).Custom((email, context) => {
             //     if ((_svc.GetUserByEmailAddress(email) != null)) {

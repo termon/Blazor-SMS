@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SMS.Core.Models;
 
 namespace SMS.Core.Dtos
 {
@@ -8,5 +8,6 @@ namespace SMS.Core.Dtos
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
+        public Role Role { get; set; }
     }
 }

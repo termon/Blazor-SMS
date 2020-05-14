@@ -22,6 +22,13 @@ public class UserController : ControllerBase
         _service = service;
     }
 
+    [HttpGet]
+    public IActionResult UserList()
+    {
+        return Ok(_service.GetAllUsers());
+    }
+    
+
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest login)
     {
@@ -36,7 +43,7 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public IActionResult Post([FromBody]RegisterRequest model)
     {
-        var user = _service.RegisterUser(model.Name,model.EmailAddress,model.Password, Role.Manager);       
+        var user = _service.RegisterUser(model.Name,model.EmailAddress,model.Password, model.Role);       
         if (user == null)
         {  
             return Ok(new RegisterResult { Successful = false, Error =  "Email Address is already registered. Please use another." });
