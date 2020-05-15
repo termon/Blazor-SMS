@@ -20,8 +20,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {           
-        var student = await Service.GetStudent(Id); 
-        dto = student.ToDto();
+        dto = await Service.GetStudent(Id);         
     }
 
     private async Task Save()

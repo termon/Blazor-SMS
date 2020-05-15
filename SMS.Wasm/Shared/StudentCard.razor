@@ -18,6 +18,12 @@
     </div>
     <div class="card-footer">
         <div class="d-flex justify-content-around">
+             <AuthorizeView>
+                <button @onclick="View" class="btn btn-primary btn-sm">
+                    <span class="oi oi-magnifying-glass mr-1" aria-hidden="true"></span>
+                    View
+                </button>           
+            </AuthorizeView>
             <AuthorizeView Roles="Admin, Manager">   
                 <button @onclick="Update" class="btn btn-info btn-sm">
                     <span class="oi oi-brush mr-1" aria-hidden="true"></span>
@@ -43,6 +49,9 @@
     
     [Parameter]
     public EventCallback OnDelete { get; set; }
+
+     [Parameter]
+    public EventCallback OnView { get; set; }
     
     private void Update()
     {
@@ -51,6 +60,11 @@
     private void Delete()
     {
         OnDelete.InvokeAsync(null);
+    }
+
+    private void View()
+    {
+        OnView.InvokeAsync(null);
     }
 }
 

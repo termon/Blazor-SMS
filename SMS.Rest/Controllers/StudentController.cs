@@ -33,11 +33,12 @@ namespace SMS.Rest.Controllers
         public IActionResult Get(int id)
         {
             var student =  _service.GetStudent(id); 
+            var dto = student.ToDto();
             if (student == null)
             {
                 return NotFound();
             }
-            return Ok(student);
+            return Ok(dto);
         }
 
         [HttpPost]
@@ -47,7 +48,7 @@ namespace SMS.Rest.Controllers
             var student = _service.AddStudent(s.Name, s.Email,  s.Course,  s.Age, s.Grade);
             if (student != null)
             {
-                return CreatedAtAction(nameof(Get), new { Id = student.Id }, student);
+                return CreatedAtAction(nameof(Get), new { Id = student.Id }, student.ToDto());
             }
             return BadRequest();
         }
@@ -67,7 +68,7 @@ namespace SMS.Rest.Controllers
             var updatedStudent = _service.UpdateStudent(id, student);           
             if (updatedStudent != null)
             {
-                return Ok(updatedStudent);
+                return Ok(updatedStudent.ToDto());
             }
             return BadRequest();
         }

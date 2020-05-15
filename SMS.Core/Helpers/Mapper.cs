@@ -1,10 +1,11 @@
 
 using System;
+using System.Linq;
 using SMS.Core.Models;
 
 namespace SMS.Core.Dtos
 {
-    public static class Converter
+    public static class Mapper
     {
         public static Ticket ToTicket(this TicketDto dto)
         {
@@ -52,7 +53,8 @@ namespace SMS.Core.Dtos
                 Course = s.Course,
                 Age = s.Age,
                 Email = s.Email,
-                Grade = s.Profile != null ? s.Profile.Grade : 0.0
+                Grade = s.Profile != null ? s.Profile.Grade : 0.0,
+                Tickets = s.Tickets.Select(t => t.ToDto()).ToList()
             };
         } 
 
@@ -62,5 +64,6 @@ namespace SMS.Core.Dtos
         }
  
     }
+
 
 }

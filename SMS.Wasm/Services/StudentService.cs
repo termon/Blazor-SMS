@@ -54,9 +54,9 @@ namespace SMS.Wasm.Services
             return student;                 
         }
         
-        public async Task<Student> GetStudent(int id)
+        public async Task<StudentDto> GetStudent(int id)
         {
-            var student =  await client.GetJsonAsync<Student>($"{url}/api/student/{id}");
+            var student =  await client.GetJsonAsync<StudentDto>($"{url}/api/student/{id}");
             Console.WriteLine($"GetStudent({id}): {student}");
             return student;  
         }

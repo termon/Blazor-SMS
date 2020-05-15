@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 namespace SMS.Core.Dtos
 {
     public class StudentDto 
@@ -10,5 +12,6 @@ namespace SMS.Core.Dtos
         
         public string Email { get; set; }
         public double Grade { get; set; }
+        public IList<TicketDto> Tickets { get; set; } = new List<TicketDto>();
     }
 }

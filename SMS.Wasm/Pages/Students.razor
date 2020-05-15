@@ -20,7 +20,7 @@ else
     <div class="row">
         @foreach (var s in students)
         {
-            <StudentCard Student="@s" OnDelete="()=>DeleteStudent(s.Id)" OnUpdate="()=>UpdateStudent(s.Id)" /> 
+            <StudentCard Student="@s" OnView="()=>ViewStudent(s.Id)" OnDelete="()=>DeleteStudent(s.Id)" OnUpdate="()=>UpdateStudent(s.Id)" /> 
         }
     </div>
 }
@@ -48,6 +48,11 @@ else
     private void UpdateStudent(int id)
     {        
         NavigationManager.NavigateTo($"students/update/{id}");
+    }
+
+    private void ViewStudent(int id)
+    {        
+        NavigationManager.NavigateTo($"students/view/{id}");
     }
     
 }
