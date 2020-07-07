@@ -40,6 +40,7 @@ namespace SMS.Core.Dtos
                 Course = s.Course,
                 Age = s.Age,
                 Email = s.Email,
+                PhotoUrl = s.PhotoUrl,
                 Profile = new Profile { Grade = s.Grade }
             };
         } 
@@ -53,6 +54,7 @@ namespace SMS.Core.Dtos
                 Course = s.Course,
                 Age = s.Age,
                 Email = s.Email,
+                PhotoUrl = s.PhotoUrl,
                 Grade = s.Profile != null ? s.Profile.Grade : 0.0,
                 Tickets = s.Tickets.Select(t => t.ToDto()).ToList()
             };

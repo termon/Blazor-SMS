@@ -28,7 +28,8 @@ namespace SMS.Core.Models
         public string Course { get; set; }
         public int Age { get; set; }
         public string Email { get; set; }
-
+        public string PhotoUrl { get; set; }
+        
         // Read-only property returning count of active tickets 
         public int ActiveTicketCount => Tickets.Where(t => t.Active).Count();
 

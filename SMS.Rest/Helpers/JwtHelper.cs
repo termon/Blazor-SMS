@@ -14,7 +14,7 @@ namespace SMS.Rest.Helpers
 {
     public static class JwtHelper
     {
-        public static LoginResult SignJwtToken(User user, IConfiguration _configuration)
+        public static string SignJwtToken(User user, IConfiguration _configuration)
         {
             var claims = new[]
             {
@@ -32,7 +32,7 @@ namespace SMS.Rest.Helpers
                 expires: DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtExpiryInDays"])),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
-            return new LoginResult { Successful = true, Token = new JwtSecurityTokenHandler().WriteToken(token) };
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public static void AddJwtSimple(this IServiceCollection services, IConfiguration _config) {

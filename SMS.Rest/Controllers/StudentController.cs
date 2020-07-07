@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SMS.Core.Models;
 using SMS.Core.Dtos;
 using SMS.Data.Services;
+using SMS.Rest.Models;
+using System.Collections.Generic;
 
 namespace SMS.Rest.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
@@ -26,7 +24,7 @@ namespace SMS.Rest.Controllers
         public IActionResult GetAll()
         {
             var students =  _service.GetAllStudents();
-            return Ok(students);
+            return Ok(ResponseApi<IList<Student>>.Ok(students));
         }
 
         [HttpGet("{id}")]       
@@ -36,21 +34,30 @@ namespace SMS.Rest.Controllers
             var dto = student.ToDto();
             if (student == null)
             {
-                return NotFound();
+                return NotFound(ResponseApi<object>.NotFound($"student {id} not found"));
             }
-            return Ok(dto);
+            return Ok(ResponseApi<StudentDto>.Ok(dto));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult create(StudentDto s)
         {
-            var student = _service.AddStudent(s.Name, s.Email,  s.Course,  s.Age, s.Grade);
-            if (student != null)
+            if (!ModelState.IsValid)
             {
-                return CreatedAtAction(nameof(Get), new { Id = student.Id }, student.ToDto());
+                return BadRequest(ResponseApi<object>.BadRequest(ModelState));
             }
-            return BadRequest();
+
+            var student = _service.AddStudent(s.Name, s.Email,  s.Course,  s.Age, s.PhotoUrl, s.Grade);
+            if (student == null)
+            {  
+                return BadRequest(ResponseApi<object>.BadRequest("Error creating student")); //Ok(new RegisterResult { Successful = false, Error =  "Email Address is already registered. Please use another." });
+            }
+            return CreatedAtAction(
+                nameof(Get), 
+                new { Id = student.Id }, 
+                ResponseApi<StudentDto>.Created(student.ToDto())
+            );
         }
 
         [HttpPut("{id}")]
@@ -65,24 +72,23 @@ namespace SMS.Rest.Controllers
                 Email = m.Email,
                 Profile = new Profile { Grade = m.Grade }
             };
-            var updatedStudent = _service.UpdateStudent(id, student);           
-            if (updatedStudent != null)
-            {
-                return Ok(updatedStudent.ToDto());
-            }
-            return BadRequest();
+            var updatedStudent = _service.UpdateStudent(id, student); 
+            if (updatedStudent == null)
+            {  
+                return BadRequest(ResponseApi<object>.BadRequest($"Problem updating user {id}"));
+            }          
+            return Ok(ResponseApi<StudentDto>.Ok(updatedStudent.ToDto()));
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles="Admin")]
         public IActionResult delete(int id)
         {
-            var ok = _service.DeleteStudent(id);
-            if (ok)
+            if (_service.DeleteStudent(id))
             {
-                return Ok();
+                return Ok( ResponseApi<StudentDto>.Ok(null, $"Student {id} deleted"));
             }
-            return NotFound();
+            return NotFound(ResponseApi<StudentDto>.NotFound($"Student {id} not found"));
         }
     }
 }

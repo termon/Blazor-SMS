@@ -1,17 +1,20 @@
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.DependencyInjection;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Microsoft.AspNetCore.Components.Forms
+// https://github.com/ryanelian/FluentValidation.Blazor
+namespace SMS.Wasm.Validation
 {
     /// <summary>
     /// Add Fluent Validator support to an EditContext.
     /// </summary>
-    public class FluentValidator : ComponentBase, IDisposable
+    public class FluentValidatorXX : ComponentBase, IDisposable
     {
         /// <summary>
         /// Inherited object from the FormEdit component.

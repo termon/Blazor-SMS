@@ -2,7 +2,7 @@ using FluentValidation;
 
 using SMS.Core.Dtos;
 
-namespace SMS.Wasm.Validators
+namespace SMS.Wasm.Validation
 {
     public class LoginRequestValidator : AbstractValidator<LoginRequest>
     {

@@ -14,14 +14,15 @@ namespace SMS.Data.Services
         // ------------- User Management -------------------
         User Authenticate(string email, string password);
         User RegisterUser(string name, string email, string password, Role role);
-        User GetUserByEmailAddress(string email);
+        User GetUserByEmailAddress(string email, int? id=null);
         IList<User> GetAllUsers();
         User GetUser(int id);
 
         // ---------------- Student Management --------------
         IList<Student> GetAllStudents();
         Student GetStudent(int id);
-        Student AddStudent(string name, string email, string course, int age, double grade);
+        Student GetStudentByEmail(string email, int? id=null);
+        Student AddStudent(string name, string email, string course, int age, string photoUrl, double grade);
         bool DeleteStudent(int id);
         Student UpdateStudent(int id, Student updated);
         Student RecalculateStudentGrade(int studentId);     

@@ -28,16 +28,27 @@ namespace SMS.Wasm.Services
 
         public async Task<IList<Student>> GetStudents()
         {                  
-            var students = await client.GetJsonAsync<Student[]>($"{url}/api/student");
-            Console.WriteLine($"GetStudents: {students.Count()}");
-            return students;
+            var response = await client.GetJsonAsync<ApiResponse<IList<Student>>>($"{url}/api/student");
+            if (response.IsSuccess) {
+                var students = (List<Student>)response.Result;
+                Console.WriteLine($"GetStudents: {students.Count()}");        
+                return students;
+            }
+            return new List<Student>();
         }
 
         public async Task<Student> AddStudent(StudentDto dto)
         {
-            var student =  await client.PostJsonAsync<Student>($"{url}/api/student", dto); 
-            Console.WriteLine($"AddStudent: {student}");
-            return student;                 
+            try {
+                var response =  await client.PostJsonAsync<ApiResponse<Student>>($"{url}/api/student", dto);            
+                var student = response.Result;
+                Console.WriteLine($"AddStudent: {student}");
+                return student;    
+            } catch {  
+                Console.WriteLine($"Error Adding Student");
+                return null;
+            }
+                        
         }
 
         public async Task<bool> DeleteStudent(int id)
@@ -49,14 +60,16 @@ namespace SMS.Wasm.Services
 
         public async Task<Student> UpdateStudent(StudentDto dto)
         {
-            var student =  await client.PutJsonAsync<Student>($"{url}/api/student/{dto.Id}", dto); 
+            var response =  await client.PutJsonAsync<ApiResponse<Student>>($"{url}/api/student/{dto.Id}", dto);
+            var student = response.Result; 
             Console.WriteLine($"UpdateStudent: {student}");
             return student;                 
         }
         
         public async Task<StudentDto> GetStudent(int id)
         {
-            var student =  await client.GetJsonAsync<StudentDto>($"{url}/api/student/{id}");
+            var response =  await client.GetJsonAsync<ApiResponse<StudentDto>>($"{url}/api/student/{id}");
+            var student = response.Result; 
             Console.WriteLine($"GetStudent({id}): {student}");
             return student;  
         }

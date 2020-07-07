@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SMS.Core.Models;
 using SMS.Core.Dtos;
 using SMS.Data.Services;
+using SMS.Rest.Models;
 
 namespace SMS.Rest.Controllers
 {
@@ -25,7 +26,7 @@ namespace SMS.Rest.Controllers
         public IActionResult GetAll()
         {
             var tickets=  _service.GetAllTickets();
-            return Ok(tickets);
+            return Ok(ResponseApi<IList<Ticket>>.Ok(tickets));
         }
 
         [HttpGet("{id}")]
@@ -35,10 +36,9 @@ namespace SMS.Rest.Controllers
             var t =  _service.GetTicket(id); 
             if (t == null)
             {
-                return NotFound();
-            }
-            
-            return Ok(t);           
+                return NotFound(ResponseApi<object>.NotFound($"Ticket {id} not found"));
+            } 
+            return Ok(ResponseApi<Ticket>.Ok(t));           
         }
 
         [HttpPost] 
@@ -48,9 +48,9 @@ namespace SMS.Rest.Controllers
             var ticket = _service.CreateTicket(m.StudentId,m.Issue);
             if (ticket != null)
             {
-                return CreatedAtAction(nameof(Get), new { Id = ticket.Id }, ticket);
+                return CreatedAtAction(nameof(Get), new { Id = ticket.Id }, ResponseApi<Ticket>.Created(ticket));
             }
-            return BadRequest();
+            return BadRequest(ResponseApi<object>.BadRequest("Ticket could not be created"));
         }
 
         [HttpDelete("{id}")]
@@ -60,9 +60,9 @@ namespace SMS.Rest.Controllers
             var ok = _service.DeleteTicket(id);
             if (ok)
             {
-                return Ok();
+                return Ok( ResponseApi<bool>.Ok(ok));
             }
-            return NotFound();
+            return NotFound( ResponseApi<string>.NotFound($"Ticket {id} could not be deleted"));
         }
     }
 }

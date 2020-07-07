@@ -40,6 +40,7 @@ namespace SMS.Wasm.Services
         // ---- Utility Methods used for Login/Logout and parsing claims from token ----
         public void MarkUserAsAuthenticated(string token)
         {
+            Console.WriteLine("Parsing claims - " + token);
             // extract claims from token and create a claims identity
             var claims = ParseClaimsFromJwt(token).ToArray();
             var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(claims, "apiauth"));

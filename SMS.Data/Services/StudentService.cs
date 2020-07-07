@@ -44,8 +44,17 @@ namespace SMS.Data.Services
                               .FirstOrDefault(s => s.Id == id);
         }
 
+        public Student GetStudentByEmail(string email, int? id = null)
+        {
+            return db.Students.Include(s => s.Profile)
+                              .Include(s => s.Tickets)
+                              .Include(s => s.StudentModules)
+                              .ThenInclude(sm => sm.Module) // drill down and include each studentmodule module entity
+                              .FirstOrDefault(s => s.Email == email && (id == null || s.Id != id));
+        }
+        
         // Add a new student and create a related profile setting the Grade 
-        public Student AddStudent(string name, string email, string course, int age, double grade)
+        public Student AddStudent(string name, string email, string course, int age, string photoUrl, double grade)
         {
             // verify that a student with same email does not exist
             var exists = db.Students.FirstOrDefault(o => o.Email == email);
@@ -60,6 +69,7 @@ namespace SMS.Data.Services
                 Email = email, /** new unique email property **/
                 Course = course,
                 Age = age,
+                PhotoUrl = photoUrl,
                 Profile = new Profile { Grade = grade },
             };
             db.Students.Add(s);
@@ -94,6 +104,7 @@ namespace SMS.Data.Services
             student.Age = updated.Age;
             student.Email = updated.Email;
             student.Course = updated.Course;
+            student.PhotoUrl = updated.PhotoUrl;
             student.Profile.Grade = updated.Profile.Grade;
             db.SaveChanges();
             return student;
@@ -372,6 +383,12 @@ namespace SMS.Data.Services
             return db.Users.FirstOrDefault(u => u.EmailAddress == email);
         }
         
+        public User GetUserByEmailAddress(string email, int? id=null)
+        {
+            // check that this email address is not already taken 
+            // or if so then its owned by user with specified id
+            return db.Users.FirstOrDefault(u => u.EmailAddress == email && ( id == null || u.Id != id));
+        }
 
     }
    

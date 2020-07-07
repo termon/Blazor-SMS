@@ -20,11 +20,11 @@ namespace SMS.Rest.Validators
 
             RuleFor(p => p.Role).IsInEnum();
             
-            // RuleFor(p => p.EmailAddress).Custom((email, context) => {
-            //     if ((_svc.GetUserByEmailAddress(email) != null)) {
-            //         context.AddFailure("EmailAddress", "Email has already been registered. Please use another.");
-            //     }
-            // });            
+            RuleFor(p => p.EmailAddress).Custom((email, context) => {
+                if ((_svc.GetUserByEmailAddress(email) != null)) {
+                    context.AddFailure("EmailAddress", "Email has already been registered. Please use another.");
+                }
+            });            
         }    
     }
 }

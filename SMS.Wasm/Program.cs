@@ -25,8 +25,10 @@ namespace SMS.Wasm
             builder.RootComponents.Add<App>("app");
 
             // http client (used in Services (auth/student))
-            builder.Services.AddBaseAddressHttpClient();
-           
+            builder.Services.AddTransient(
+                sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)}
+            );
+
             // 3rd party library providing access to localstorage and used to store jwt token
             builder.Services.AddBlazoredLocalStorage();
 

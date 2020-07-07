@@ -17,7 +17,7 @@
             <FluentValidator />
 
             <div class="form-group">
-                <label for="name">Name</label>
+                <label for="name">Name!</label>
                 <InputText Id="name" class="form-control" @bind-Value="RegisterModel.Name" />
                 <ValidationMessage For="@(() => RegisterModel.Name)" />
             </div>
@@ -53,13 +53,13 @@
 
         var result = await AuthService.RegisterAsync(RegisterModel);
 
-        if (result.Successful)
+        if (result.IsSuccess)
         {
             NavigationManager.NavigateTo("/login");
         }
         else
         {
-            Error = result.Error;
+            Error = result.Message;
             ShowErrors = true;
         }
     }
