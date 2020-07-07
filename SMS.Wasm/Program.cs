@@ -25,7 +25,7 @@ namespace SMS.Wasm
             builder.RootComponents.Add<App>("app");
 
             // http client (used in Services (auth/student))
-            builder.Services.AddTransient(
+            builder.Services.AddSingleton(
                 sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)}
             );
 
