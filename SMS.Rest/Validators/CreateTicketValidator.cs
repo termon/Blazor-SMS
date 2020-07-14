@@ -3,9 +3,9 @@ using SMS.Core.Dtos;
 
 namespace SMS.Rest.Validators
 {
-    public class TicketValidator : AbstractValidator<CreateTicketRequest>
+    public class CreateTicketValidator : AbstractValidator<CreateTicketDto>
     {
-        public TicketValidator()
+        public CreateTicketValidator()
         {
             RuleFor(p => p.StudentId).NotEmpty();
             RuleFor(p => p.Issue).NotEmpty().MaximumLength(50);

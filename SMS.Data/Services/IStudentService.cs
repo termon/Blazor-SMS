@@ -25,7 +25,8 @@ namespace SMS.Data.Services
         Student AddStudent(string name, string email, string course, int age, string photoUrl, double grade);
         bool DeleteStudent(int id);
         Student UpdateStudent(int id, Student updated);
-        Student RecalculateStudentGrade(int studentId);     
+        Student RecalculateStudentGrade(int studentId);   
+        Student GetStudentByEmailAddress(string email, int? id=null);  
 
         // -------------- Module Management -----------------
         Module AddModule(string name);

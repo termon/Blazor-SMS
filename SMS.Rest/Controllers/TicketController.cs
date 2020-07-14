@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using SMS.Core.Models;
 using SMS.Core.Dtos;
 using SMS.Data.Services;
-using SMS.Rest.Models;
 
 namespace SMS.Rest.Controllers
 {
@@ -26,7 +25,7 @@ namespace SMS.Rest.Controllers
         public IActionResult GetAll()
         {
             var tickets=  _service.GetAllTickets();
-            return Ok(ResponseApi<IList<Ticket>>.Ok(tickets));
+            return Ok(tickets);
         }
 
         [HttpGet("{id}")]
@@ -36,21 +35,21 @@ namespace SMS.Rest.Controllers
             var t =  _service.GetTicket(id); 
             if (t == null)
             {
-                return NotFound(ResponseApi<object>.NotFound($"Ticket {id} not found"));
+                return NotFound(new ErrorResponse { Message = $"Ticket {id} not found" });
             } 
-            return Ok(ResponseApi<Ticket>.Ok(t));           
+            return Ok(t);           
         }
 
         [HttpPost] 
         [Authorize(Roles="Admin")]   
-        public IActionResult create(CreateTicketRequest m)
+        public IActionResult create(CreateTicketDto m)
         {
             var ticket = _service.CreateTicket(m.StudentId,m.Issue);
             if (ticket != null)
             {
-                return CreatedAtAction(nameof(Get), new { Id = ticket.Id }, ResponseApi<Ticket>.Created(ticket));
+                return CreatedAtAction(nameof(Get), new { Id = ticket.Id }, ticket);
             }
-            return BadRequest(ResponseApi<object>.BadRequest("Ticket could not be created"));
+            return BadRequest(new ErrorResponse { Message = "Ticket could not be created" } );
         }
 
         [HttpDelete("{id}")]
@@ -60,9 +59,9 @@ namespace SMS.Rest.Controllers
             var ok = _service.DeleteTicket(id);
             if (ok)
             {
-                return Ok( ResponseApi<bool>.Ok(ok));
+                return Ok();
             }
-            return NotFound( ResponseApi<string>.NotFound($"Ticket {id} could not be deleted"));
+            return NotFound( new ErrorResponse { Message = $"Ticket {id} could not be deleted" });
         }
     }
 }

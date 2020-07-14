@@ -5,10 +5,10 @@ using SMS.Wasm.Services;
 
 namespace SMS.Wasm.Validation
 {
-    public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
+    public class RegisterValidator : AbstractValidator<RegisterDto>
     {
 
-        public RegisterRequestValidator(AuthService _svc)
+        public RegisterValidator(AuthService _svc)
         {            
             RuleFor(p => p.Name).NotEmpty()
                 .MaximumLength(20);  

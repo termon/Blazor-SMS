@@ -43,7 +43,7 @@
 
 @code {
 
-    private RegisterRequest RegisterModel = new RegisterRequest();
+    private RegisterDto RegisterModel = new RegisterDto();
     private bool ShowErrors;
     private string Error;
 
@@ -53,13 +53,13 @@
 
         var result = await AuthService.RegisterAsync(RegisterModel);
 
-        if (result.IsSuccess)
+        if (result != null)
         {
             NavigationManager.NavigateTo("/login");
         }
         else
         {
-            Error = result.Message;
+            Error = "Could not register user";
             ShowErrors = true;
         }
     }

@@ -2,11 +2,11 @@ using FluentValidation;
 
 using SMS.Core.Dtos;
 
-namespace SMS.Wasm.Validation
+namespace SMS.Rest.Validators
 {
-    public class LoginRequestValidator : AbstractValidator<LoginRequest>
+    public class LoginValidator : AbstractValidator<LoginDto>
     {
-        public LoginRequestValidator()
+        public LoginValidator()
         {
             RuleFor(p => p.EmailAddress).NotEmpty();
             RuleFor(p => p.Password).NotEmpty();

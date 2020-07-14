@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using FluentValidation.AspNetCore;
 using SMS.Data.Services;
 using SMS.Rest.Helpers;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
-using SMS.Rest.Validators;
+using SMS.Rest.Filters;
 
 namespace SMS.Rest
 {
@@ -29,15 +29,16 @@ namespace SMS.Rest
             // enable cors processing
             services.AddCors(); 
             
-            // turn off standard api validation filter to use our own and customise response
+            // turn off standard api validation filter to use our own
+            // ValidationFilter to customise response
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            // configure controller, adding fluent validation and custom validation filter
+            // configure controller, adding custom validation filter and fluent validation
             services.AddControllers(
-                opts => opts.Filters.Add(new ValidateModelAttribute())
+                opts => opts.Filters.Add(new ValidationFilter())
             ).AddFluentValidation(
                 fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>()
             );

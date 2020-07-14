@@ -6,9 +6,9 @@ using System;
 
 namespace SMS.Rest.Validators
 {
-    public class StudentDtoValidator : AbstractValidator<StudentDto>
+    public class StudentValidator : AbstractValidator<StudentDto>
     {
-        public StudentDtoValidator(IStudentService _svc)
+        public StudentValidator(IStudentService _svc)
         {
             RuleFor(p => p.Name).NotEmpty().MaximumLength(50);
             RuleFor(p => p.Course).NotEmpty().MaximumLength(50);

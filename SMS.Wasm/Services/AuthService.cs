@@ -32,41 +32,38 @@ namespace SMS.Wasm.Services
             _url = config.GetSection("Services")["ApiURL"];
         }
 
-        public async Task<ApiResponse> RegisterAsync(RegisterRequest registerModel)
+        public async Task<UserDto> RegisterAsync(RegisterDto registerModel)
         {
             // response code must be 20X otherwise PostJsonAsync causes an exception
             try
             {
-                return await _httpClient.PostJsonAsync<ApiResponse>($"{_url}/api/user/register", registerModel);
+                return await _httpClient.PostJsonAsync<UserDto>($"{_url}/api/user/register", registerModel);
             } 
             catch (HttpRequestException e)
             {  
-                return new ApiResponse { StatusCode = 400, Message = e.Message };
+                return null;
             }
         }
 
-        public async Task<ApiResponse<string>> LoginAsync(LoginRequest loginModel)
+        public async Task<UserDto> LoginAsync(LoginDto loginModel)
         {
             // response code must be 20X otherwise PostJsonAsync causes an exception
             try {
-                var response = await _httpClient.PostJsonAsync<ApiResponse<string>>($"{_url}/api/user/login", loginModel);
-            
-                if (response.IsSuccess)
-                {
-                    // add token to localstorage, update auth state with authenticated user, and set default http auth header
-                    await _localStorage.SetItemAsync("authToken", response.Result);   
-                    Console.WriteLine(response.Result);       
+                var user = await _httpClient.PostJsonAsync<UserDto>($"{_url}/api/user/login", loginModel);      
+        
+                // add token to localstorage, update auth state with authenticated user, and set default http auth header
+                await _localStorage.SetItemAsync("authToken", user.Token);        
 
-                    // mark user as logged in and set auth header for future requests      
-                    ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(response.Result);
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", response.Result);
-                }
-                return response;
+                // mark user as logged in and set auth header for future requests      
+                ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(user.Token);
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", user.Token);
+            
+                return user;
             }
             catch (HttpRequestException e)
             {  
                 Console.WriteLine("Login Exception " + e);
-                return new ApiResponse<string> { StatusCode = 400, Message = e.Message };
+                return null;
             }
         }
 
@@ -82,7 +79,6 @@ namespace SMS.Wasm.Services
 
         public async Task<bool> VerifyEmailAvailableAsync(string email)
         {
-            Console.WriteLine($"Verifying Email Available: {email}");
             return await _httpClient.GetJsonAsync<bool>($"{_url}/api/user/verify/{email}");
         }
 

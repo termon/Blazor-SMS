@@ -5,9 +5,9 @@ using SMS.Wasm.Services;
 
 namespace SMS.Wasm.Validation
 {
-    public class StudentDtoValidator : AbstractValidator<StudentDto>
+    public class StudentValidator : AbstractValidator<StudentDto>
     {
-        public StudentDtoValidator()
+        public StudentValidator()
         {
             RuleFor(p => p.Name).NotEmpty().MaximumLength(50);
             RuleFor(p => p.Course).NotEmpty().MaximumLength(50);

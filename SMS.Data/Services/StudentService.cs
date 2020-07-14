@@ -378,16 +378,16 @@ namespace SMS.Data.Services
         /// </summary>
         /// <param name="email">user EmailAddress</param>
         /// <returns>The user if found, otherewise null</returns>
-        public User GetUserByEmailAddress(string email)
+        public User GetUserByEmailAddress(string email, int? id=null)
         {
-            return db.Users.FirstOrDefault(u => u.EmailAddress == email);
+            return db.Users.FirstOrDefault(u => u.EmailAddress == email && ( id == null || u.Id != id));
         }
         
-        public User GetUserByEmailAddress(string email, int? id=null)
+        public Student GetStudentByEmailAddress(string email, int? id=null)
         {
             // check that this email address is not already taken 
             // or if so then its owned by user with specified id
-            return db.Users.FirstOrDefault(u => u.EmailAddress == email && ( id == null || u.Id != id));
+            return db.Students.FirstOrDefault(u => u.Email == email && ( id == null || u.Id != id));
         }
 
     }

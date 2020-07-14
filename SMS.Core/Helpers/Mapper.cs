@@ -7,6 +7,30 @@ namespace SMS.Core.Dtos
 {
     public static class Mapper
     {
+        public static UserDto ToDto(this User u)
+        {
+            return new UserDto {
+                Id = u.Id,
+                Name = u.Name,
+                EmailAddress = u.EmailAddress,
+                // password is removed for security
+                Role = (int)u.Role,
+                Token = u.Token
+            };
+        }
+
+        public static User ToUser(this UserDto dto)
+        {
+            return new User {
+                Id = dto.Id,
+                Name = dto.Name,
+                EmailAddress = dto.EmailAddress,
+                // password is removed for security
+                Role = (Role)dto.Role,
+                Token = dto.Token
+            };
+        }
+
         public static Ticket ToTicket(this TicketDto dto)
         {
             if (dto == null) return null;

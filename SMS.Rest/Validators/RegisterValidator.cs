@@ -6,9 +6,9 @@ using SMS.Data.Services;
 
 namespace SMS.Rest.Validators
 {
-    public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
+    public class RegisterValidator : AbstractValidator<RegisterDto>
     {
-        public RegisterRequestValidator(IStudentService _svc)
+        public RegisterValidator(IStudentService _svc)
         {
             RuleFor(p => p.Name).NotEmpty().MaximumLength(20);
 

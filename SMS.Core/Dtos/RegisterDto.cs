@@ -2,7 +2,7 @@
 
 namespace SMS.Core.Dtos
 {
-    public class RegisterRequest
+    public class RegisterDto
     {
         public string Name { get; set; }
         public string EmailAddress { get; set; }
