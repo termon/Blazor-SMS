@@ -1,13 +1,14 @@
 @page "/logout"
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
+@inject IToastService toastService
 
 @code {
-
     protected override async Task OnInitializedAsync()
     {
         await AuthService.LogoutAsync();
         NavigationManager.NavigateTo("/");
+        toastService.ShowInfo("Logged out successfully");
     }
 
 }

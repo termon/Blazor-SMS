@@ -1,6 +1,7 @@
 @page "/students/add"
 @inject NavigationManager NavigationManager
 @inject StudentService Service
+@inject IToastService toastService
 
 <h3 class="mt-4 mb-4">Add Student</h3>
 <StudentForm dto="dto" OnSave="OnAddStudent" OnCancel="OnCancelAddStudent" />
@@ -12,10 +13,12 @@
     {
         var s = await Service.AddStudent(dto);        
         NavigationManager.NavigateTo("students");
+        toastService.ShowSuccess("Student added successfully");
     }
 
     private void OnCancelAddStudent()
     {        
          NavigationManager.NavigateTo("students");
+         toastService.ShowInfo("Add student cancelled");
     }
 }

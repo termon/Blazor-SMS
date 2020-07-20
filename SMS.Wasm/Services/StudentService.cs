@@ -33,7 +33,6 @@ namespace SMS.Wasm.Services
 
         public async Task<StudentDto> AddStudent(StudentDto dto)
         {
-
             try {
                 var student =  await client.PostJsonAsync<StudentDto>($"{url}/api/student", dto);                          
                 Console.WriteLine($"AddStudent: {student}");
@@ -41,8 +40,7 @@ namespace SMS.Wasm.Services
             } catch {  
                 Console.WriteLine($"Error Adding Student");
                 return null;
-            }
-                        
+            }              
         }
 
         public async Task<bool> DeleteStudent(int id)

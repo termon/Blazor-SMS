@@ -1,15 +1,10 @@
 @page "/login"
+@using SMS.Core.Helpers
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
+@inject IToastService toastService
 
 <h1>Login</h1>
-
-@if (ShowErrors)
-{
-    <div class="alert alert-danger" role="alert">
-        @Error
-    </div>
-}
 
 <div class="card">
     <div class="card-body">
@@ -33,26 +28,21 @@
 </div>
 
 @code {
-
     private LoginDto loginModel = new LoginDto();
-    private bool ShowErrors;
-    private string Error = "";
-
+    
     private async Task HandleLogin()
     {
-        ShowErrors = false;
-
         var result = await AuthService.LoginAsync(loginModel);
 
-        if (result != null)
-        {
-            NavigationManager.NavigateTo("/");
-        }
-        else
-        {
-            Error = "Could not login";
-            ShowErrors = true;
-        }
+        result.Match(
+            userDto => { 
+                toastService.ShowSuccess("Successful Login"); 
+                 NavigationManager.NavigateTo("/"); 
+            },
+            error => { 
+                toastService.ShowError(error.Message); 
+            }
+        );
     }
 
 }

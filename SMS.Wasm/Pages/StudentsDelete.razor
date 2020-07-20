@@ -1,6 +1,7 @@
 @page "/students/delete/{Id:int}"
 @inject NavigationManager NavigationManager
 @inject StudentService Service
+@inject IToastService ToastService
 
 <h3 class="mt-4 mb-4">Delete Student</h3>
 
@@ -26,14 +27,18 @@ else
         <dd class="col-sm-9">@student.Email</dd>
     </dl>
     <div class="row">
-        <button @onclick="Delete" class="btn btn-danger mr-3">Delete</button>
+        <button @onclick="() => DeleteConfirm.Show()" class="btn btn-danger mr-3">Delete</button>
         <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
     </div>
+
+    <ConfirmComponent ConfirmationChanged="Delete" @ref="DeleteConfirm"></ConfirmComponent>
+
 }
 @code {
+    protected ConfirmComponent DeleteConfirm { get; set;}
+  
     [Parameter]
     public int Id { get; set; }
-
     public StudentDto student { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -41,13 +46,21 @@ else
         student = await Service.GetStudent(Id);       
     }
 
-
-    private async Task Delete()
+    private async Task Delete(bool deleteConfirmed)
     {
-        var ok = await Service.DeleteStudent(Id); 
-        if (ok) 
-        {       
-            NavigationManager.NavigateTo("students");
+        if (deleteConfirmed)
+        {
+            // TODO - add union return type containing boolean or ErrorResponse
+            var ok = await Service.DeleteStudent(Id); 
+            if (ok) 
+            {       
+                NavigationManager.NavigateTo("students");
+                ToastService.ShowSuccess("Student deleted successfully");
+            }
+            else
+            {
+                ToastService.ShowError("Problem deleting student");
+            }
         }
     }
 

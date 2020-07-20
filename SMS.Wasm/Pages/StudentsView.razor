@@ -1,6 +1,7 @@
 @page "/students/view/{Id:int}"
 @inject NavigationManager NavigationManager
 @inject StudentService Service
+@inject IToastService ToastService
 
 @if (student == null)
 {
@@ -10,7 +11,7 @@ else
 {
     <h3 class="mt-2 mb-2">Student</h3>
     <div class="card mt-4">    
-        <img src="@student.PhotoUrl" class="img-thumbnail" alt="student photo">
+        <img src="@student.PhotoUrl" class="img-thumbnail col-4" alt="student photo">
         <h5 class="card-title text-center mt-3">@student.Name </h5>
         <div class="card-body">
             <ul class="list-group list-group-flush">
@@ -32,6 +33,7 @@ else
             <li class="list-group-item">@t.Issue</li>
         }  
     </ul> 
+
 }
 
 

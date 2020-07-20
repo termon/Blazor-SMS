@@ -12,6 +12,7 @@ using SMS.Wasm.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using FluentValidation;
+using Blazored.Toast;
 
 
 //https://devblogs.microsoft.com/aspnet/blazor-webassembly-3-2-0-preview-2-release-now-available/
@@ -31,12 +32,15 @@ namespace SMS.Wasm
 
             // 3rd party library providing access to localstorage and used to store jwt token
             builder.Services.AddBlazoredLocalStorage();
+            // 3rd party library providing toast service 
+            builder.Services.AddBlazoredToast();
 
             // configure authorization
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 
+            // configure fluid validation
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
             // add auth service

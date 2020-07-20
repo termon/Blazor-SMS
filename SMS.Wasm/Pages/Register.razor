@@ -1,13 +1,9 @@
 @page "/register"
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
+@inject IToastService toastService
 
 <h1 class="mb-4">Register</h1>
-
-@if (ShowErrors)
-{
-    <Alert Message=@Error Type="danger"/>
-}
 
 <div class="card">
     <div class="card-body">
@@ -44,23 +40,19 @@
 @code {
 
     private RegisterDto RegisterModel = new RegisterDto();
-    private bool ShowErrors;
-    private string Error;
 
     private async Task HandleRegistration()
     {
-        ShowErrors = false;
-
         var result = await AuthService.RegisterAsync(RegisterModel);
 
-        if (result != null)
-        {
-            NavigationManager.NavigateTo("/login");
-        }
-        else
-        {
-            Error = "Could not register user";
-            ShowErrors = true;
-        }
+        result.Match(
+            u => { 
+                NavigationManager.NavigateTo("/login"); 
+                toastService.ShowSuccess("Registered Successfully"); 
+            },
+            e => { 
+                toastService.ShowError(e.Message);
+            }
+        );
     }
 }

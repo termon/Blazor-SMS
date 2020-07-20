@@ -11,19 +11,12 @@
     </button>
 </AuthorizeView>
 
-@if (students == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
     <div class="row">
         @foreach (var s in students)
         {
-            <StudentCard Student="@s" OnView="()=>ViewStudent(s.Id)" OnDelete="()=>DeleteStudent(s.Id)" OnUpdate="()=>UpdateStudent(s.Id)" /> 
+        <StudentCard Student="@s" OnView="()=>ViewStudent(s.Id)" OnDelete="()=>DeleteStudent(s.Id)" OnUpdate="()=>UpdateStudent(s.Id)" /> 
         }
     </div>
-}
 
 @code {
 
