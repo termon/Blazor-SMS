@@ -4,6 +4,7 @@ namespace SMS.Core.Helpers
 {
 
     // Discriminated Union Type implementation
+    // https://medium.com/kabbage-engineering/discriminated-unions-in-c-an-unexceptional-love-story-82abb7f260c2
     public abstract class Union<T1, T2> : IEquatable<Union<T1, T2>>
     {
         public abstract TResult Match<TResult>(Func<T1, TResult> f1, Func<T2, TResult> f2);
