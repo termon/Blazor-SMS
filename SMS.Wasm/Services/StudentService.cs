@@ -1,13 +1,13 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using SMS.Core.Dtos;
-using SMS.Core.Models;
+using System.Net.Http.Json;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
-
+using SMS.Core.Dtos;
+using SMS.Core.Models;
+using SMS.Core.Helpers;
 
 namespace SMS.Wasm.Services
 {
@@ -24,54 +24,61 @@ namespace SMS.Wasm.Services
             this.url =  config.GetSection("Services")["ApiURL"];
         }
 
-        public async Task<IList<Student>> GetStudents()
+        public async Task< IList<Student> > GetStudents()
         {                  
-            var students = await client.GetJsonAsync<IList<Student>>($"{url}/api/student");            
-            Console.WriteLine($"GetStudents: {students.Count()}");        
-            return students;
+            return await client.GetJsonAsync<IList<Student>>($"{url}/api/student");
         }
 
-        public async Task<StudentDto> AddStudent(StudentDto dto)
+        public async Task< Union<StudentDto,ErrorResponse> > AddStudent(StudentDto dto)
         {
-            try {
-                var student =  await client.PostJsonAsync<StudentDto>($"{url}/api/student", dto);                          
-                Console.WriteLine($"AddStudent: {student}");
-                return student;    
-            } catch {  
-                Console.WriteLine($"Error Adding Student");
-                return null;
-            }              
-        }
-
-        public async Task<bool> DeleteStudent(int id)
-        {
-            try {               
-                await client.DeleteAsync($"{url}/api/student/{id}");   
-                 Console.WriteLine($"Success: DeleteStudent");
-                return true;              
-            } catch {
-                Console.WriteLine($"Error: DeleteStudent");
-                return false;
+            var response = await client.PostAsync($"{url}/api/student", JsonContent.Create(dto));
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<StudentDto>();
             }
+            else
+            {
+                return await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            }           
         }
 
-        public async Task<StudentDto> UpdateStudent(StudentDto dto)
+        public async Task< Union<bool,ErrorResponse> > DeleteStudent(int id)
         {
-            var student =  await client.PutJsonAsync<StudentDto>($"{url}/api/student/{dto.Id}", dto);
-            Console.WriteLine($"UpdateStudent: {student}");
-            return student;                 
+            var response = await client.DeleteAsync($"{url}/api/student/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            } 
+        }
+
+        public async Task< Union<StudentDto,ErrorResponse> > UpdateStudent(StudentDto dto)
+        {
+            var response = await client.PutAsync($"{url}/api/student/{dto.Id}", JsonContent.Create(dto));
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<StudentDto>();
+            }
+            else 
+            {
+                return await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            }                
         }
         
-        public async Task<StudentDto> GetStudent(int id)
+        public async Task< Union<StudentDto,ErrorResponse> > GetStudent(int id)
         {
-            try {
-                var student =  await client.GetJsonAsync<StudentDto>($"{url}/api/student/{id}"); 
-                Console.WriteLine($"GetStudent({id}): {student}");
-                return student;
-            } catch {
-                Console.WriteLine($"Error: GetStudent({id})");
-                return null;
+            var response = await client.GetAsync($"{url}/api/student/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<StudentDto>();
             }
+            else 
+            {
+                return await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            } 
         }
     }
 }

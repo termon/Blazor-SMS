@@ -45,7 +45,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {           
-        student = await Service.GetStudent(Id);        
+        var result = await Service.GetStudent(Id);  
+        result.Match(
+            s => student = s,
+            e => ToastService.ShowError(e.Message)
+        );
+                  
     } 
 
 }

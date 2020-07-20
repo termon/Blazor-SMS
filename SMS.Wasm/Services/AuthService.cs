@@ -1,17 +1,14 @@
 using SMS.Core.Dtos;
 
 using System;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-
 using System.Net.Http.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
-using System.Collections;
+using Blazored.LocalStorage;
 using SMS.Core.Helpers;
 
 namespace SMS.Wasm.Services
@@ -38,38 +35,23 @@ namespace SMS.Wasm.Services
 
         public async Task< Union<UserDto,ErrorResponse> > RegisterAsync(RegisterDto registerModel)
         {
-            // response code must be 20X otherwise PostJsonAsync causes an exception
+            // register user and check response
             var response = await _httpClient.PostAsync($"{_url}/api/user/register", JsonContent.Create(registerModel));      
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Register Success");
                 return await response.Content.ReadFromJsonAsync<UserDto>();
             }
             else
             {
-                var error = await response.Content.ReadFromJsonAsync<ErrorResponse>(); 
-                Console.WriteLine("Register failure: " + error.Message);               
+                var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();              
                 return error;
-            }
-        }
-
-        public async Task<UserDto> RegisterAsyncOrig(RegisterDto registerModel)
-        {
-            // response code must be 20X otherwise PostJsonAsync causes an exception
-            try
-            {
-                return await _httpClient.PostJsonAsync<UserDto>($"{_url}/api/user/register", registerModel);
-            } 
-            catch (HttpRequestException e)
-            {  
-                return null;
             }
         }
 
        public async Task< Union<UserDto,ErrorResponse> > LoginAsync(LoginDto loginModel)
         {
-            var response = await _httpClient.PostAsync($"{_url}/api/user/login", JsonContent.Create(loginModel));      
-    
+            // submit login request and check response
+            var response = await _httpClient.PostAsync($"{_url}/api/user/login", JsonContent.Create(loginModel));
             if (response.IsSuccessStatusCode)
             {
                 var user = await response.Content.ReadFromJsonAsync<UserDto>(); 
@@ -83,31 +65,11 @@ namespace SMS.Wasm.Services
             }
             else 
             {
-                // webapi non success status codes return an ErrorResponse object
+                // webapi unsuccessful status codes return an ErrorResponse object
                 var error = await response.Content.ReadFromJsonAsync<ErrorResponse>(); 
                 return error;
             }          
   
-        }
-        public async Task<UserDto> LoginAsyncOrig(LoginDto loginModel)
-        {
-            // response code must be 20X otherwise PostJsonAsync causes an exception
-            try {
-                var user = await _httpClient.PostJsonAsync<UserDto>($"{_url}/api/user/login", loginModel);      
-        
-                // add token to localstorage, update auth state with authenticated user, and set default http auth header
-                await _localStorage.SetItemAsync("authToken", user.Token);        
-
-                // mark user as logged in and set auth header for future requests      
-                ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(user.Token);
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", user.Token);
-            
-                return user;
-            }
-            catch (HttpRequestException e)
-            {  
-                return null;
-            }
         }
 
         public async Task LogoutAsync()

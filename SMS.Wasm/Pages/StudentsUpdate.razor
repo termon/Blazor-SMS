@@ -20,20 +20,24 @@ else
     public StudentDto dto { get; set; }
 
     protected override async Task OnInitializedAsync()
-    {           
-        dto = await Service.GetStudent(Id);         
+    {      
+        var result = await Service.GetStudent(Id);  
+        result.Match(
+            s => dto = s,
+            e => ToastService.ShowError(e.Message)
+        );       
     }
 
     private async Task Save()
     {
-        // TODO - use union type here to allow a StudentDto or ErrorResponse result
-        var s = await Service.UpdateStudent(dto); 
-        if (s != null)
-        {
-            NavigationManager.NavigateTo("students");
-            ToastService.ShowSuccess("Student updated successfully");
-        }
-        ToastService.ShowError("Problem updating student");
+        var result = await Service.UpdateStudent(dto); 
+        result.Match(
+            s => { 
+                NavigationManager.NavigateTo("students");
+                ToastService.ShowSuccess("Student updated successfully");
+            },
+            e => ToastService.ShowError(e.Message)
+        );
     }
 
     private void Cancel()

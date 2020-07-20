@@ -43,24 +43,25 @@ else
 
     protected override async Task OnInitializedAsync()
     {           
-        student = await Service.GetStudent(Id);       
+        var result = await Service.GetStudent(Id);  
+        result.Match(
+            s => student = s,
+            e => ToastService.ShowError(e.Message)
+        );     
     }
 
     private async Task Delete(bool deleteConfirmed)
     {
         if (deleteConfirmed)
         {
-            // TODO - add union return type containing boolean or ErrorResponse
-            var ok = await Service.DeleteStudent(Id); 
-            if (ok) 
-            {       
-                NavigationManager.NavigateTo("students");
-                ToastService.ShowSuccess("Student deleted successfully");
-            }
-            else
-            {
-                ToastService.ShowError("Problem deleting student");
-            }
+            var result = await Service.DeleteStudent(Id); 
+            result.Match(
+                s => {
+                    NavigationManager.NavigateTo("students");
+                    ToastService.ShowSuccess("Student deleted successfully");
+                },
+                e => ToastService.ShowError(e.Message)
+            ); 
         }
     }
 
