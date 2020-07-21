@@ -5,32 +5,32 @@
 
 <h3 class="mt-4 mb-4">Update Student</h3>
 
-@if(dto == null)
+@if(Student == null)
 {    <p>Loading student...</p>
 }
 else
 {
-    <StudentForm dto="dto" OnSave="Save" OnCancel="Cancel"></StudentForm>
+    <StudentForm Student="Student" OnSave="Save" OnCancel="Cancel"></StudentForm>
 }
 
 @code {
     [Parameter]
     public int Id { get; set; }
 
-    public StudentDto dto { get; set; }
+    public StudentDto Student { get; set; }
 
     protected override async Task OnInitializedAsync()
     {      
         var result = await Service.GetStudent(Id);  
         result.Match(
-            s => dto = s,
+            s => Student = s,
             e => ToastService.ShowError(e.Message)
         );       
     }
 
     private async Task Save()
     {
-        var result = await Service.UpdateStudent(dto); 
+        var result = await Service.UpdateStudent(Student); 
         result.Match(
             s => { 
                 NavigationManager.NavigateTo("students");

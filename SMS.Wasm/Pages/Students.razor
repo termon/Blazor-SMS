@@ -10,16 +10,25 @@
     </button>
 </AuthorizeView>
 
-    <div class="row">
-        @foreach (var s in students)
-        {
-        <StudentCard Student="@s" OnView="()=>ViewStudent(s.Id)" OnDelete="()=>DeleteStudent(s.Id)" OnUpdate="()=>UpdateStudent(s.Id)" /> 
-        }
-    </div>
+<div class="row">
+    @foreach (var s in students)
+    {
+        <StudentCard Student="@s" OnView="()=>ViewStudentModal(s)" OnDelete="()=>DeleteStudent(s.Id)" OnUpdate="()=>UpdateStudent(s.Id)" /> 
+    }
+</div>
+
+<ModalDialog Display="display" Title="Update">
+
+    <Content>
+        <StudentForm Student="current" />
+    </Content>
+</ModalDialog>
 
 @code {
 
-    private IList<Student> students = new List<Student>();
+    private bool display = false;
+    private StudentDto current = new StudentDto();
+    private IList<StudentDto> students = new List<StudentDto>();
    
     protected override async Task OnInitializedAsync()
     {    
@@ -46,5 +55,9 @@
     {        
         NavigationManager.NavigateTo($"students/view/{id}");
     }
-    
+    private void ViewStudentModal(StudentDto s)
+    {        
+        display = true;
+        current = s;
+    }
 }

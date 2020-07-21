@@ -24,9 +24,9 @@ namespace SMS.Wasm.Services
             this.url =  config.GetSection("Services")["ApiURL"];
         }
 
-        public async Task< IList<Student> > GetStudents()
+        public async Task< IList<StudentDto> > GetStudents()
         {                  
-            return await client.GetJsonAsync<IList<Student>>($"{url}/api/student");
+            return await client.GetJsonAsync<IList<StudentDto>>($"{url}/api/student");
         }
 
         public async Task< Union<StudentDto,ErrorResponse> > AddStudent(StudentDto dto)

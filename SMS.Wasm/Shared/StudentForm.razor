@@ -1,38 +1,38 @@
 
-<EditForm Model="@dto" OnValidSubmit="Save">
+<EditForm Model="@Student" OnValidSubmit="Save">
     @* <DataAnnotationsValidator /> *@
     <FluentValidator />
     
     <div class="form-group">
         <label for="Name">Name</label>
-        <InputText id="Name" @bind-Value="dto.Name" class="form-control" />
-        <ValidationMessage For="@(() => dto.Name)" />
+        <InputText id="Name" @bind-Value="Student.Name" class="form-control" />
+        <ValidationMessage For="@(() => Student.Name)" />
     </div>
     
     <div class="form-group">
         <label for="Email">Course</label>
-        <InputText id="Course" @bind-Value="dto.Course" class="form-control" />
-        <ValidationMessage For="@(() => dto.Course)"/>
+        <InputText id="Course" @bind-Value="Student.Course" class="form-control" />
+        <ValidationMessage For="@(() => Student.Course)"/>
     </div>
 
     <div class="row">
         <div class="form-group col-8">
             <label for="Email">Email</label>
-            <InputText id="Email" @bind-Value="dto.Email" class="form-control" />
-            <ValidationMessage For="@(() => dto.Email)"/>
+            <InputText id="Email" @bind-Value="Student.Email" class="form-control" />
+            <ValidationMessage For="@(() => Student.Email)"/>
         </div>
 
         <div class="form-group col-4">
             <label for="Age">Age</label>
-            <InputNumber id="Age" @bind-Value="dto.Age" class="form-control" />
-            <ValidationMessage For="@(() => dto.Age)"/>
+            <InputNumber id="Age" @bind-Value="Student.Age" class="form-control" />
+            <ValidationMessage For="@(() => Student.Age)"/>
         </div>
     </div>
 
     <div class="form-group">
         <label for="PhotoUrl">Photo Url</label>
-        <InputText id="PhotoUrl" @bind-Value="dto.PhotoUrl" class="form-control" />
-        <ValidationMessage For="@(() => dto.PhotoUrl)"/>
+        <InputText id="PhotoUrl" @bind-Value="Student.PhotoUrl" class="form-control" />
+        <ValidationMessage For="@(() => Student.PhotoUrl)"/>
     </div>
 
     <div class="form-group mb-4">
@@ -44,7 +44,7 @@
 
 @code {
     [Parameter]
-    public StudentDto dto {get; set;}
+    public StudentDto Student {get; set;}
 
     [Parameter] 
     public EventCallback<StudentDto> OnSave { get; set; }
@@ -58,7 +58,7 @@
     }
 
     private void Save() {       
-        OnSave.InvokeAsync(dto);       
+        OnSave.InvokeAsync(Student);       
     }
 
 }
