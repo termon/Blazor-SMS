@@ -7,7 +7,6 @@ namespace SMS.Wasm.Validation
 {
     public class RegisterValidator : AbstractValidator<RegisterDto>
     {
-
         public RegisterValidator(AuthService _svc)
         {            
             RuleFor(p => p.Name).NotEmpty()
@@ -18,26 +17,14 @@ namespace SMS.Wasm.Validation
                         
             RuleFor(p => p.ConfirmPassword).Equal(p => p.Password); 
 
-            // causes browser lockup
-            // RuleFor(p => p.EmailAddress).MustAsync(async (email, cancellation) => {
-            //          bool available = await _svc.VerifyEmailAvailableAsync(email);
-            //          return !available;
-            // }).WithMessage("EmailAddress is already Registered");
+            // uses async validator to call injected AuthService VerifyEmailAvailable action
             RuleFor(p => p.EmailAddress)
                 .NotEmpty()
                 .EmailAddress()
-                .Custom(async (email, context) => {
-                    var available = await _svc.VerifyEmailAvailableAsync(email);                  
-                    if (!available) 
-                    {
-                        Console.WriteLine("Adding Email Validation Error Message");
-                        context.AddFailure("EmailAddress", "Email has already been registered. Please use another.");
-                    }              
-                }
-            );   
-           
+                .MustAsync(async (email, cancellation) => {
+                     return await _svc.VerifyEmailAvailableAsync(email);
+                }).WithMessage("EmailAddress is already Registered"); 
         }    
     }
-
 
 }
