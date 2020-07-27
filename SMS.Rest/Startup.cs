@@ -71,8 +71,8 @@ namespace SMS.Rest
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseAuthentication();
-            app.UseAuthorization();      
+            app.UseAuthentication(); // Must be after UseRouting()
+            app.UseAuthorization(); // Must be after UseAuthentication()     
            
             app.UseEndpoints(endpoints =>
             {

@@ -19,14 +19,15 @@ namespace SMS.Rest.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult GetAll()
         {
             var students =  _service.GetAllStudents();
             return Ok(students);
         }
 
-        [HttpGet("{id}")]       
+        [HttpGet("{id}")]   
+        [Authorize]    
         public IActionResult Get(int id)
         {
             var student =  _service.GetStudent(id); 
