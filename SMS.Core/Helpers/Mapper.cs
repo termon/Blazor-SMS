@@ -64,7 +64,9 @@ namespace SMS.Core.Dtos
                 Age = s.Age,
                 Email = s.Email,
                 PhotoUrl = s.PhotoUrl,
-                Profile = new Profile { Grade = s.Grade }
+                Profile = new Profile { Grade = s.Grade },
+                Tickets = s.Tickets.Select(t => t.ToTicket()).ToList(),
+                StudentModules = s.StudentModules.Select(m => m.ToStudentModule()).ToList()
             };
         } 
 
@@ -79,9 +81,33 @@ namespace SMS.Core.Dtos
                 Email = s.Email,
                 PhotoUrl = s.PhotoUrl,
                 Grade = s.Profile != null ? s.Profile.Grade : 0.0,
-                Tickets = s.Tickets.Select(t => t.ToDto()).ToList()
+                Tickets = s.Tickets.Select(t => t.ToDto()).ToList(),
+                StudentModules = s.StudentModules.Select(m => m.ToDto()).ToList()
             };
         } 
+
+        public static StudentModuleDto ToDto(this StudentModule m)
+        {
+            if (m == null) return null;
+            return new StudentModuleDto {
+                Id = m.Id,
+                Mark = m.Mark,
+                StudentId = m.StudentId,
+                ModuleId = m.ModuleId,
+                Title = m.Module.Title
+            };
+        }
+
+        public static StudentModule ToStudentModule(this StudentModuleDto m)
+        {
+            if (m == null) return null;
+            return new StudentModule {
+                Id = m.Id,
+                Mark = m.Mark,
+                StudentId = m.StudentId,
+                ModuleId = m.ModuleId
+            };
+        }
 
         public static string ToPrintable(this StudentDto s)  
         {      

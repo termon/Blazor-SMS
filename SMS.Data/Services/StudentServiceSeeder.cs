@@ -21,6 +21,9 @@ namespace SMS.Data.Services
             var m1 = svc.AddModule("Programming");
             var m2 = svc.AddModule("Maths");
             var m3 = svc.AddModule("English");
+            var m4 = svc.AddModule("French");
+            var m5 = svc.AddModule("Physics");
+            
 
             // Add ticket for Homer    
             var t1 = svc.CreateTicket(s1.Id, "Bart you little ...");
@@ -31,18 +34,34 @@ namespace SMS.Data.Services
 
             // Homer is taking programming
             svc.AddStudentToModule(s1.Id, m1.Id);
+            svc.AddStudentToModule(s1.Id, m5.Id);
+            svc.UpdateStudentModuleMark(s1.Id, m1.Id, 45);
+            svc.UpdateStudentModuleMark(s1.Id, m1.Id, 55);
 
             // Marge is taking maths
             svc.AddStudentToModule(s2.Id, m2.Id);
+            svc.AddStudentToModule(s2.Id, m4.Id);
+            svc.UpdateStudentModuleMark(s2.Id, m2.Id, 56);
+            svc.UpdateStudentModuleMark(s2.Id, m4.Id, 68);
 
             // Bart is taking English 
             svc.AddStudentToModule(s3.Id, m3.Id);
+            svc.AddStudentToModule(s3.Id, m1.Id);
+            svc.UpdateStudentModuleMark(s3.Id, m3.Id, 56);
+            svc.UpdateStudentModuleMark(s3.Id, m1.Id, 36);
 
             // Lisa is taking Programming Maths and English
             svc.AddStudentToModule(s4.Id, m1.Id);
             svc.AddStudentToModule(s4.Id, m2.Id);
             svc.AddStudentToModule(s4.Id, m3.Id);
-
+            svc.AddStudentToModule(s4.Id, m4.Id);
+            svc.AddStudentToModule(s4.Id, m5.Id);
+            svc.UpdateStudentModuleMark(s4.Id, m1.Id, 78);
+            svc.UpdateStudentModuleMark(s4.Id, m2.Id, 82);
+            svc.UpdateStudentModuleMark(s4.Id, m3.Id, 84);
+            svc.UpdateStudentModuleMark(s4.Id, m4.Id, 91);
+            svc.UpdateStudentModuleMark(s4.Id, m5.Id, 69);
+            
             // add users
             var u1 = svc.RegisterUser("Guest", "guest@sms.com", "guest", Role.Guest);
             var u2 = svc.RegisterUser("Administrator", "admin@sms.com", "admin", Role.Admin);

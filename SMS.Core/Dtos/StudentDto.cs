@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using SMS.Core.Models;
 
 namespace SMS.Core.Dtos
 {
@@ -13,5 +14,6 @@ namespace SMS.Core.Dtos
         public string PhotoUrl { get; set; }
         public double Grade { get; set; }
         public IList<TicketDto> Tickets { get; set; } = new List<TicketDto>();
+        public IList<StudentModuleDto> StudentModules { get; set; } = new List<StudentModuleDto>();
     }
 }
