@@ -6,8 +6,6 @@
         <NavLink class="nav-link" href="logout">
             <span class="oi oi-account-logout" aria-hidden="true"></span> 
             <span class="font-weight-light text-white">@context.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email).Value</span>
-            <span class="font-weight-light text-white">@context.User.Identity.Name</span>
-
         </NavLink>
     </Authorized>
     <NotAuthorized>
