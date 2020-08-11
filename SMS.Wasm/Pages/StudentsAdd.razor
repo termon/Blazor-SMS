@@ -11,9 +11,16 @@
 
     private async Task OnAddStudent(StudentDto dto)
     {
-        var s = await Service.AddStudent(dto);        
-        NavigationManager.NavigateTo("students");
-        toastService.ShowSuccess("Student added successfully");
+        var s = await Service.AddStudent(dto); 
+        s.Match(
+            s => {
+                NavigationManager.NavigateTo("students");
+                toastService.ShowSuccess("Student added successfully");
+             },
+            e => {
+                toastService.ShowError(e.Message);
+            }
+        );       
     }
 
     private void OnCancelAddStudent()

@@ -52,6 +52,18 @@ namespace SMS.Rest.Controllers
             return BadRequest(new ErrorResponse { Message = "Ticket could not be created" } );
         }
 
+        [HttpPut("close/{id}")] 
+        [Authorize(Roles="Admin, Manager")]   
+        public IActionResult close(int id)
+        {
+            var ticket = _service.CloseTicket(id);
+            if (ticket != null)
+            {
+                return Ok(ticket.ToDto());
+            }
+            return BadRequest(new ErrorResponse { Message = "Ticket could not be closed" } );
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Roles="Admin")]   
         public IActionResult delete(int id)

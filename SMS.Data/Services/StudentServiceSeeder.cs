@@ -28,6 +28,8 @@ namespace SMS.Data.Services
             // Add ticket for Homer    
             var t1 = svc.CreateTicket(s1.Id, "Bart you little ...");
             var t11 = svc.CreateTicket(s1.Id, "Which button do I press ...");
+            var t12 = svc.CreateTicket(s1.Id, "Mmmmmm Beer ...");
+            svc.CloseTicket(t12.Id);
 
             // Add ticket for Bart
             var t2 = svc.CreateTicket(s3.Id, "Go to Skinners office");
