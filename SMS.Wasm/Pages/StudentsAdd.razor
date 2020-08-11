@@ -18,11 +18,24 @@
                 toastService.ShowSuccess("Student added successfully");
              },
             e => {
-                toastService.ShowError(e.Errors.Aggregate((result, item) => result + " " + item));
+                //toastService.ShowError(e.Errors.Aggregate((result, item) => result + " " + item));
+                toastService.ShowToast(ToastLevel.Error, GenerateErrorFragment(e));
             }
         );       
     }
-
+    RenderFragment GenerateErrorFragment(ErrorResponse e)
+    {
+        RenderFragment f = b =>
+        {
+            foreach(var e in e.Errors) { 
+                b.OpenElement(1, "div");
+                b.AddContent(2, e);
+                b.CloseElement();
+            }
+        };
+        return f;
+    }
+    
     private void OnCancelAddStudent()
     {        
          NavigationManager.NavigateTo("students");
