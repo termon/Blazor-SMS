@@ -18,7 +18,7 @@
                 toastService.ShowSuccess("Student added successfully");
              },
             e => {
-                toastService.ShowError(e.Message);
+                toastService.ShowError(e.Errors.Aggregate((result, item) => result + item));
             }
         );       
     }
