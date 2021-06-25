@@ -30,12 +30,9 @@ namespace SMS.Data.Repositories
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder               
-                /** use logger to log the sql commands issued by entityframework **/
-                // .UseLoggerFactory(new ServiceCollection()
-                //      .AddLogging(builder => builder.AddConsole())
-                //      .BuildServiceProvider()
-                //      .GetService<ILoggerFactory>()
-                //  )    
+                /** use logger to log the sql commands issued by entityframework **/  
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
                 .UseSqlite("Filename=SMS.db");
                 //.UseSqlServer(@"Server=(localdb)\mssqllocaldb; Database=SMS; Trusted_Connection=True;ConnectRetryCount=0");
         }

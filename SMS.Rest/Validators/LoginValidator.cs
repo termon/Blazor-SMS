@@ -8,7 +8,7 @@ namespace SMS.Rest.Validators
     {
         public LoginValidator()
         {
-            RuleFor(p => p.EmailAddress).NotEmpty();
+            RuleFor(p => p.Email).NotEmpty();
             RuleFor(p => p.Password).NotEmpty();
         }    
     }

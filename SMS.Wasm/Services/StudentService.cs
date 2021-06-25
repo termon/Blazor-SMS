@@ -26,7 +26,7 @@ namespace SMS.Wasm.Services
 
         public async Task< IList<StudentDto> > GetStudents()
         {                  
-            return await client.GetJsonAsync<IList<StudentDto>>($"{url}/api/student");
+            return await client.GetFromJsonAsync<IList<StudentDto>>($"{url}/api/student");
         }
 
         public async Task< Union<StudentDto,ErrorResponse> > AddStudent(StudentDto dto)

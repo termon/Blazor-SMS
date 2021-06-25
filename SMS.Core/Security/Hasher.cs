@@ -5,9 +5,9 @@ using System.Security.Cryptography;
 // https://www.devtrends.co.uk/blog/hashing-encryption-and-random-in-asp.net-core
 // Simple class to generate and verify a Hash
 
-namespace SMS.Data.Security
+namespace SMS.Core.Security
 {
-    static class Hasher
+    public static class Hasher
     {    
         // Generated Salt and Hash returned
         public static string CalculateHash(string input)

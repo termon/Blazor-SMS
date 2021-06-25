@@ -3,7 +3,7 @@ using FluentValidation;
 using SMS.Core.Dtos;
 using SMS.Wasm.Services;
 
-namespace SMS.Wasm.Validation
+namespace SMS.Wasm.Validators
 {
     public class RegisterValidator : AbstractValidator<RegisterDto>
     {
@@ -18,7 +18,7 @@ namespace SMS.Wasm.Validation
             RuleFor(p => p.ConfirmPassword).Equal(p => p.Password); 
 
             // uses async validator to call injected AuthService VerifyEmailAvailable action
-            RuleFor(p => p.EmailAddress)
+            RuleFor(p => p.Email)
                 .NotEmpty()
                 .EmailAddress()
                 .MustAsync(async (email, cancellation) => {

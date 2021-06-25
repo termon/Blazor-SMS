@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 using SMS.Core.Models;
 using SMS.Data.Repositories;
-using SMS.Data.Security;
+using SMS.Core.Security;
 
 namespace SMS.Data.Services
 {

@@ -12,7 +12,7 @@ namespace SMS.Rest.Validators
         {
             RuleFor(p => p.Name).NotEmpty().MaximumLength(20);
 
-            RuleFor(p => p.EmailAddress).NotEmpty().EmailAddress();
+            RuleFor(p => p.Email).NotEmpty().EmailAddress();
 
             RuleFor(p => p.Password).NotEmpty().MinimumLength(3);
             
@@ -20,9 +20,9 @@ namespace SMS.Rest.Validators
 
             RuleFor(p => p.Role).IsInEnum();
             
-            RuleFor(p => p.EmailAddress).Custom((email, context) => {
+            RuleFor(p => p.Email).Custom((email, context) => {
                 if ((_svc.GetUserByEmailAddress(email) != null)) {
-                    context.AddFailure("EmailAddress", "Email has already been registered. Please use another.");
+                    context.AddFailure("Email", "Email has already been registered. Please use another.");
                 }
             });            
         }    

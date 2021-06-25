@@ -1,0 +1,31 @@
+<!-- 
+    Using CascadingValue to wrap top level component and thus make
+    appstate available as a cascading parameter to all sub-components
+
+    Important that we call StateHasChanged anytime the state held in this
+    component changes
+-->
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    // global app state 
+    private AppState _state;
+    public AppState State
+    {
+        get
+        {
+            return _state;
+        }
+        set
+        {
+            _state = value;
+            StateHasChanged();
+        }
+    }
+
+}

@@ -84,7 +84,7 @@ namespace SMS.Wasm.Services
 
         public async Task<bool> VerifyEmailAvailableAsync(string email)
         {
-            return await _httpClient.GetJsonAsync<bool>($"{_url}/api/user/verify/{email}");
+            return await _httpClient.GetFromJsonAsync<bool>($"{_url}/api/user/verify/{email}");
         }
 
     }

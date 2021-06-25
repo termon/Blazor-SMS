@@ -2,7 +2,7 @@ using System;
 using FluentValidation;
 using SMS.Core.Dtos;
 
-namespace SMS.Wasm.Validation
+namespace SMS.Wasm.Validators
 {
     public class StudentValidator : AbstractValidator<StudentDto>
     {

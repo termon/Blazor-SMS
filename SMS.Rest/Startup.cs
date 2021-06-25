@@ -24,7 +24,7 @@ namespace SMS.Rest
         public void ConfigureServices(IServiceCollection services)
         {           
             // configure jwt authentication using extension method                      
-            services.AddJwtSimple(Configuration);
+            services.AddJwtAuthentication(Configuration);
             
             // enable cors processing
             services.AddCors(); 

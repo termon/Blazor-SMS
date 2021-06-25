@@ -31,20 +31,20 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginDto login)
     {
-        var user = _service.Authenticate(login.EmailAddress, login.Password);            
+        var user = _service.Authenticate(login.Email, login.Password);            
         if (user == null)
         {          
             return Unauthorized( new ErrorResponse { Message = "Username and/or password are invalid."} );
         }
         var dto = user.ToDto();
-        dto.Token = JwtHelper.SignJwtToken(user, _configuration);
+        dto.Token = AuthBuilder.BuildJwtToken(user, _configuration);
         return Ok( dto );
     }
     
     [HttpPost("register")]
     public IActionResult Post([FromBody]RegisterDto model)
     {
-        var user = _service.RegisterUser(model.Name,model.EmailAddress,model.Password, model.Role);       
+        var user = _service.RegisterUser(model.Name,model.Email,model.Password, model.Role);       
         if (user == null)
         {  
             return BadRequest(new ErrorResponse { Message = "Error creating user" } );
