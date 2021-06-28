@@ -1,0 +1,59 @@
+@page "/students/view/{Id:int}"
+@inject NavigationManager NavigationManager
+@inject StudentService Service
+@inject IToastService ToastService
+
+@if (student == null)
+{
+    <p>Loading ....</p>
+}
+else
+{
+    <h3 class="mt-2 mb-2">Student</h3>
+    <StudentDetails Student="student" OnUpdate="Update" OnDelete="Delete" />
+}
+<ConfirmComponent ConfirmationChanged="Delete" @ref="DeleteConfirm"></ConfirmComponent>
+
+@code {
+    protected ConfirmComponent DeleteConfirm { get; set;}
+  
+    [Parameter]  
+    public int Id { get; set; }
+
+    private StudentDto student; 
+
+    protected override async Task OnInitializedAsync()
+    {           
+        var result = await Service.GetStudent(Id);  
+        result.Match(
+            s => student = s,
+            e => ToastService.ShowError(e.Message)
+        );
+                  
+    } 
+    private void Update() 
+    {
+        NavigationManager.NavigateTo($"students/update/{Id}");
+    }
+    
+    private void Delete()
+    {
+        DeleteConfirm.Show();
+    }
+
+    private async Task Delete(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            var result = await Service.DeleteStudent(Id); 
+            result.Match(
+                s => {
+                    NavigationManager.NavigateTo("students");
+                    ToastService.ShowSuccess("Student deleted successfully");
+                },
+                e => ToastService.ShowError(e.Message)
+            ); 
+        }
+    }
+
+}

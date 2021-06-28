@@ -1,0 +1,89 @@
+<div class="card mt-4">  
+    <div class="row"> 
+        <div class="col-8">         
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <span class="oi oi-person mr-3" aria-hidden="true"></span> 
+                    @Student.Name              
+                </li>
+                <li class="list-group-item">
+                    <span class="oi oi-envelope-closed mr-3" aria-hidden="true"></span> 
+                    @Student.Email              
+                </li>
+                <li class="list-group-item">
+                    <span class="oi oi-text mr-3" aria-hidden="true"></span>
+                    @Student.Course
+                </li>
+                <li class="list-group-item">
+                    <span class="oi oi-target mr-3" aria-hidden="true"></span>
+                    @Student.Age
+                </li>
+            </ul>           
+        </div>
+        <div class="col-4">
+            <img src="@Student.PhotoUrl" class="img-thumbnail" alt="student photo">
+        </div>
+    </div>
+   
+    <!-- tickets -->
+    <div>
+        <h5 class="mt-2 ml-2 mb-2">Tickets</h5>
+        <ul class="list-group"> 
+            @foreach (var t in Student.Tickets)
+            {
+                <li class="list-group-item">@t.Issue</li>
+            }  
+        </ul> 
+    </div>
+
+    <!-- buttons -->
+    <div class="card-footer d-flex">
+        <div class="me-auto">
+            <a href=@($"students/update/{Student.Id}") class="btn btn-primary">
+             <span class="oi oi-brush mr-1" aria-hidden="true"></span> Update
+            </a>
+            <button @onclick="Delete" class="btn btn-danger">
+                <span class="oi oi-delete mr-1" aria-hidden="true"></span> Delete
+            </button>          
+            <a href="students" class="btn btn-secondary">
+                 <span class="oi oi-grid-three-up mr-1" aria-hidden="true"></span> 
+                Student List
+            </a> 
+        </div>
+        <div class="ms-auto">
+            <button class="btn btn-link me-auto">
+                 <span class="oi oi-paperclip mr-1" aria-hidden="true"></span> New Ticket
+            </button>
+        </div>
+    </div>
+</div>    
+
+@code {  
+    [Parameter]  
+    public StudentDto Student { get; set; }
+
+    [Parameter]
+    public EventCallback OnUpdate { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+    
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+    
+    private void Update()
+    {
+        OnUpdate.InvokeAsync(null);
+    }
+
+    private void Delete()
+    {
+        OnDelete.InvokeAsync(null);
+    }
+
+    private void Cancel()
+    {
+       
+    }
+}
+

@@ -13,25 +13,26 @@
 }
 else 
 {
-    <dl class="row">
-        <dt class="col-sm-3">Name</dt>
-        <dd class="col-sm-9">@Student.Name</dd>
-        
-        <dt class="col-sm-3">Course</dt>
-        <dd class="col-sm-9">@Student.Course</dd>
-        
-        <dt class="col-sm-3">Age</dt>
-        <dd class="col-sm-9">@Student.Age</dd>
-        
-        <dt class="col-sm-3">Email</dt>
-        <dd class="col-sm-9">@Student.Email</dd>
-    </dl>
-    <div class="row">
-        <button @onclick="() => DeleteConfirm.Show()" class="btn btn-danger mr-3">Delete</button>
-        <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+    <div class="card shadow p-4">
+        <dl class="row">
+            <dt class="col-sm-3">Name</dt>
+            <dd class="col-sm-9">@Student.Name</dd>
+            
+            <dt class="col-sm-3">Course</dt>
+            <dd class="col-sm-9">@Student.Course</dd>
+            
+            <dt class="col-sm-3">Age</dt>
+            <dd class="col-sm-9">@Student.Age</dd>
+            
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Student.Email</dd>
+        </dl>
+        <div>
+            <button @onclick="() => DeleteConfirm.Show()" class="btn btn-danger mr-3">Delete</button>
+            <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+        </div>
     </div>
-
-    <ConfirmComponent ConfirmationChanged="Delete" @ref="DeleteConfirm"></ConfirmComponent>
+    <ConfirmComponent ConfirmationChanged="ConfirmDelete" @ref="DeleteConfirm"></ConfirmComponent>
 
 }
 @code {
@@ -50,7 +51,7 @@ else
         );     
     }
 
-    private async Task Delete(bool deleteConfirmed)
+    private async Task ConfirmDelete(bool deleteConfirmed)
     {
         if (deleteConfirmed)
         {

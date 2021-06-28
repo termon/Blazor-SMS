@@ -1,4 +1,4 @@
-@page "/login"
+@page "/users/login"
 @using SMS.Core.Helpers
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
@@ -35,9 +35,9 @@
         var result = await AuthService.LoginAsync(loginModel);
 
         result.Match(
-            userDto => { 
-                toastService.ShowSuccess("Successful Login"); 
-                 NavigationManager.NavigateTo("/"); 
+            userDto => {                 
+                NavigationManager.NavigateTo("/");
+                toastService.ShowSuccess("Successful Login");  
             },
             error => { 
                 toastService.ShowError(error.Message); 

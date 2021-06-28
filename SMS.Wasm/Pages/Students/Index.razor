@@ -1,0 +1,72 @@
+@page "/students"
+
+@inject StudentService api
+@inject NavigationManager NavigationManager
+
+<h3>Registered Students</h3>
+
+<AuthorizeView Roles="Admin">
+    <button @onclick="AddStudent" class="btn btn-primary btn-sm mr-2 mb-2 mt-2"> 
+        <span class="oi oi-plus mr-2" aria-hidden="true"></span>Add Student
+    </button>
+</AuthorizeView>
+
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Email</th>
+                <th scope="col">Course</th>
+                <th scope="col">Age</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var s in students)
+        {
+            <tr>
+                <th>@s.Id</th>
+                <td>@s.Email</td>
+                <td>@s.Course</td>
+                <td>@s.Age</td>
+                <td>
+                    <AuthorizeView>
+                        <NavLink  href=@{$"/students/view/{s.Id}"}>
+                            <span class="oi oi-magnifying-glass mr-1" aria-hidden="true"></span>
+                        </NavLink>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="Admin, Manager">  
+                        <NavLink  href=@{$"/students/update/{s.Id}"}>
+                             <span class="oi oi-brush mr-1" aria-hidden="true"></span>
+                        </NavLink>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="Admin">
+                        <NavLink href=@{$"/students/delete/{s.Id}"}>
+                             <span class="oi oi-delete mr-1" aria-hidden="true"></span> Delete
+                        </NavLink>      
+                    </AuthorizeView>
+                </td>
+            </tr>
+         }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+
+    private IList<StudentDto> students = new List<StudentDto>();
+   
+    protected override async Task OnInitializedAsync()
+    {    
+        Console.WriteLine("Getting students from api");       
+        students = await api.GetStudents();        
+    } 
+
+    private void AddStudent()
+    {
+        NavigationManager.NavigateTo("students/add");
+    }
+
+}

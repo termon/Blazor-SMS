@@ -1,4 +1,4 @@
-@page "/logout"
+@page "/users/logout"
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 @inject IToastService toastService
@@ -7,7 +7,7 @@
     protected override async Task OnInitializedAsync()
     {
         await AuthService.LogoutAsync();
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/users/login");
         toastService.ShowInfo("Logged out successfully");
     }
 

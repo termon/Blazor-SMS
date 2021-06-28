@@ -1,4 +1,4 @@
-@page "/register"
+@page "/users/register"
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 @inject IToastService toastService
@@ -47,7 +47,7 @@
 
         result.Match(
             u => { 
-                NavigationManager.NavigateTo("/login"); 
+                NavigationManager.NavigateTo("/user/login"); 
                 toastService.ShowSuccess("Registered Successfully"); 
             },
             e => { 

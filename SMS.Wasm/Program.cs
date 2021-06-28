@@ -14,8 +14,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using FluentValidation;
 using Blazored.Toast;
 
-
-//https://devblogs.microsoft.com/aspnet/blazor-webassembly-3-2-0-preview-2-release-now-available/
 namespace SMS.Wasm
 {
     public class Program
@@ -23,10 +21,10 @@ namespace SMS.Wasm
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("app");
+            builder.RootComponents.Add<App>("#app");
 
             // http client (used in Services (auth/student))
-            builder.Services.AddSingleton(
+            builder.Services.AddScoped(
                 sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)}
             );
 
@@ -40,7 +38,7 @@ namespace SMS.Wasm
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 
-            // configure fluid validation
+            // configure fluid validation (Accelist.FluentValidation.Blazor 4.0 only supports FluentValidation < 10)
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
             // add auth service
