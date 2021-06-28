@@ -33,8 +33,8 @@ public class UserController : ControllerBase
     {
         var user = _service.Authenticate(login.Email, login.Password);            
         if (user == null)
-        {          
-            return Unauthorized( new ErrorResponse { Message = "Username and/or password are invalid."} );
+        {
+            return Unauthorized( Problem("Username and/or password are invalid.", statusCode: 400).Value );
         }
         var dto = user.ToDto();
         dto.Token = AuthBuilder.BuildJwtToken(user, _configuration);
@@ -47,7 +47,7 @@ public class UserController : ControllerBase
         var user = _service.RegisterUser(model.Name,model.Email,model.Password, model.Role);       
         if (user == null)
         {  
-            return BadRequest(new ErrorResponse { Message = "Error creating user" } );
+            return BadRequest( Problem( "Error creating user", statusCode: 400).Value );
         }
         return CreatedAtAction(nameof(Login), user);
      }

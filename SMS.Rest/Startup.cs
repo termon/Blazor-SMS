@@ -29,19 +29,12 @@ namespace SMS.Rest
             // enable cors processing
             services.AddCors(); 
             
-            // turn off standard api validation filter to use our own
-            // ValidationFilter to customise response
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
-
-            // configure controller, adding custom validation filter and fluent validation
-            services.AddControllers(
-                opts => opts.Filters.Add(new ValidationFilter())
-            ).AddFluentValidation(
-                fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>()
-            );
+            // to turn off standard api validation filter and use custom ValidationFilter
+            // services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
+            // services.AddControllers( opts => opts.Filters.Add(new ValidationFilter())
+            
+            // configure controller, registering fluent validation validator classes
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             // configure the student service in DI
             services.AddSingleton<IStudentService,StudentService>();

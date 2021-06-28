@@ -29,7 +29,7 @@ namespace SMS.Wasm.Services
             return await client.GetFromJsonAsync<IList<StudentDto>>($"{url}/api/student");
         }
 
-        public async Task< Union<StudentDto,ErrorResponse> > AddStudent(StudentDto dto)
+        public async Task< Union<StudentDto,ProblemDetailsDto> > AddStudent(StudentDto dto)
         {
             var response = await client.PostAsync($"{url}/api/student", JsonContent.Create(dto));
             if (response.IsSuccessStatusCode)
@@ -38,11 +38,11 @@ namespace SMS.Wasm.Services
             }
             else
             {
-                return await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                return await response.Content.ReadFromJsonAsync<ProblemDetailsDto>();
             }           
         }
 
-        public async Task< Union<bool,ErrorResponse> > DeleteStudent(int id)
+        public async Task< Union<bool,ProblemDetailsDto> > DeleteStudent(int id)
         {
             var response = await client.DeleteAsync($"{url}/api/student/{id}");
             if (response.IsSuccessStatusCode)
@@ -51,11 +51,11 @@ namespace SMS.Wasm.Services
             }
             else
             {
-                return await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                return await response.Content.ReadFromJsonAsync<ProblemDetailsDto>();
             } 
         }
 
-        public async Task< Union<StudentDto,ErrorResponse> > UpdateStudent(StudentDto dto)
+        public async Task< Union<StudentDto,ProblemDetailsDto> > UpdateStudent(StudentDto dto)
         {
             var response = await client.PutAsync($"{url}/api/student/{dto.Id}", JsonContent.Create(dto));
             if (response.IsSuccessStatusCode)
@@ -64,11 +64,11 @@ namespace SMS.Wasm.Services
             }
             else 
             {
-                return await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                return await response.Content.ReadFromJsonAsync<ProblemDetailsDto>();
             }                
         }
         
-        public async Task< Union<StudentDto,ErrorResponse> > GetStudent(int id)
+        public async Task< Union<StudentDto,ProblemDetailsDto> > GetStudent(int id)
         {
             var response = await client.GetAsync($"{url}/api/student/{id}");
             if (response.IsSuccessStatusCode)
@@ -77,7 +77,7 @@ namespace SMS.Wasm.Services
             }
             else 
             {
-                return await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                return await response.Content.ReadFromJsonAsync<ProblemDetailsDto>();
             } 
         }
     }

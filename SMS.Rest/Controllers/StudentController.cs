@@ -34,7 +34,7 @@ namespace SMS.Rest.Controllers
             var dto = student.ToDto();
             if (student == null)
             {
-                return NotFound(new ErrorResponse { Message = $"student {id} not found" });
+                return NotFound(Problem($"student {id} not found", statusCode: 404).Value);
             }
             return Ok(dto);
         }
@@ -47,7 +47,7 @@ namespace SMS.Rest.Controllers
             var student = _service.AddStudent(s.Name, s.Email,  s.Course,  s.Age, s.PhotoUrl, s.Grade);
             if (student == null)
             {  
-                return BadRequest(new ErrorResponse { Message = "Error creating student" } );
+                return BadRequest(Problem($"Problem creating student", statusCode: 400 ).Value);
             }
             return CreatedAtAction(
                 nameof(Get), 
@@ -64,7 +64,7 @@ namespace SMS.Rest.Controllers
             var updatedStudent = _service.UpdateStudent(id, student); 
             if (updatedStudent == null)
             {  
-                return BadRequest( new ErrorResponse { Message = $"Problem updating user {id}" });
+                return BadRequest( Problem($"Problem updating user {id}", statusCode: 400 ).Value);
             }          
             return Ok(updatedStudent.ToDto());
         }
@@ -77,7 +77,7 @@ namespace SMS.Rest.Controllers
             {
                 return Ok();
             }
-            return NotFound(new ErrorResponse { Message = $"Student {id} not found" });
+            return NotFound(Problem($"Student {id} not found", statusCode: 404 ).Value);
         }
 
         [HttpGet("verify/{email}/{id?}")]

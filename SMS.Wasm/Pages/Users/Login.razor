@@ -40,7 +40,7 @@
                 toastService.ShowSuccess("Successful Login");  
             },
             error => { 
-                toastService.ShowError(error.Message); 
+                toastService.ShowError(error.Detail); 
             }
         );
     }

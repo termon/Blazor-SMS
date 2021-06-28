@@ -47,7 +47,7 @@ else
         var result = await Service.GetStudent(Id);  
         result.Match(
             s => Student = s,
-            e => ToastService.ShowError(e.Message)
+            e => ToastService.ShowError(e.Title)
         );     
     }
 
@@ -61,7 +61,7 @@ else
                     NavigationManager.NavigateTo("students");
                     ToastService.ShowSuccess("Student deleted successfully");
                 },
-                e => ToastService.ShowError(e.Message)
+                e => ToastService.ShowError(e.Detail)
             ); 
         }
     }

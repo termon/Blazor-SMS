@@ -17,13 +17,13 @@
                 NavigationManager.NavigateTo("students");
                 toastService.ShowSuccess("Student added successfully");
              },
-            e => {
-                //toastService.ShowError(e.Errors.Aggregate((result, item) => result + " " + item));
-                toastService.ShowToast(ToastLevel.Error, GenerateErrorFragment(e));
+            e => {              
+                toastService.ShowError(e.Detail);
             }
         );       
     }
-    RenderFragment GenerateErrorFragment(ErrorResponse e)
+
+    @* RenderFragment GenerateErrorFragment(ProblemDetailsDto e)
     {
         RenderFragment f = b =>
         {
@@ -34,11 +34,10 @@
             }
         };
         return f;
-    }
+    } *@
     
     private void OnCancelAddStudent()
     {        
          NavigationManager.NavigateTo("students");
-         //toastService.ShowInfo("Add student cancelled");
     }
 }

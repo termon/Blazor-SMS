@@ -33,7 +33,7 @@ namespace SMS.Wasm.Services
             _url = config.GetSection("Services")["ApiURL"];
         }
 
-        public async Task< Union<UserDto,ErrorResponse> > RegisterAsync(RegisterDto registerModel)
+        public async Task< Union<UserDto,ProblemDetailsDto> > RegisterAsync(RegisterDto registerModel)
         {
             // register user and check response
             var response = await _httpClient.PostAsync($"{_url}/api/user/register", JsonContent.Create(registerModel));      
@@ -43,12 +43,12 @@ namespace SMS.Wasm.Services
             }
             else
             {
-                var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();              
+                var error = await response.Content.ReadFromJsonAsync<ProblemDetailsDto>();              
                 return error;
             }
         }
 
-       public async Task< Union<UserDto,ErrorResponse> > LoginAsync(LoginDto loginModel)
+       public async Task< Union<UserDto,ProblemDetailsDto> > LoginAsync(LoginDto loginModel)
         {
             // submit login request and check response
             var response = await _httpClient.PostAsync($"{_url}/api/user/login", JsonContent.Create(loginModel));
@@ -66,7 +66,7 @@ namespace SMS.Wasm.Services
             else 
             {
                 // webapi unsuccessful status codes return an ErrorResponse object
-                var error = await response.Content.ReadFromJsonAsync<ErrorResponse>(); 
+                var error = await response.Content.ReadFromJsonAsync<ProblemDetailsDto>(); 
                 return error;
             }          
   

@@ -35,7 +35,7 @@ namespace SMS.Rest.Controllers
             var t =  _service.GetTicket(id); 
             if (t == null)
             {
-                return NotFound(new ErrorResponse { Message = $"Ticket {id} not found" });
+                return NotFound(Problem($"Ticket {id} not found", statusCode: 404).Value);
             } 
             return Ok(t);           
         }
@@ -49,7 +49,7 @@ namespace SMS.Rest.Controllers
             {
                 return CreatedAtAction(nameof(Get), new { Id = ticket.Id }, ticket);
             }
-            return BadRequest(new ErrorResponse { Message = "Ticket could not be created" } );
+            return BadRequest(Problem ("Ticket could not be created", statusCode:400 ).Value );
         }
 
         [HttpPut("close/{id}")] 
@@ -61,7 +61,7 @@ namespace SMS.Rest.Controllers
             {
                 return Ok(ticket.ToDto());
             }
-            return BadRequest(new ErrorResponse { Message = "Ticket could not be closed" } );
+            return BadRequest(Problem("Ticket could not be closed" , statusCode: 400).Value );
         }
 
         [HttpDelete("{id}")]
@@ -73,7 +73,7 @@ namespace SMS.Rest.Controllers
             {
                 return Ok();
             }
-            return NotFound( new ErrorResponse { Message = $"Ticket {id} could not be deleted" });
+            return NotFound( Problem($"Ticket {id} could not be deleted", statusCode: 400).Value);
         }
     }
 }

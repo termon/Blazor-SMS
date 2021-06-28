@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using SMS.Core.Dtos;
 using SMS.Data.Services;
 using System;
+using System.Net;
 
 namespace SMS.Rest.Validators
 {
@@ -19,6 +20,22 @@ namespace SMS.Rest.Validators
                 if ((_svc.GetStudentByEmail(email, s.Id) != null)) {                   
                     context.AddFailure("Email", "Email has already been registered. Please use another.");
                 }
+            });
+            RuleFor( p => p.PhotoUrl).Custom((url, context) => {
+                if (url != null && url != "")
+                {
+                    try {
+                        var uri = new Uri(url, UriKind.Absolute);
+                        // using method head doesn't down load the resource, rather it just verifies its existence
+                        WebRequest webRequest = WebRequest.Create(uri);
+                        webRequest.Method = "HEAD";
+                        webRequest.GetResponse();                            
+                    } 
+                    catch
+                    {
+                        context.AddFailure("Url Endpoint is not valid");
+                    }
+                };            
             }); 
         }
     }
