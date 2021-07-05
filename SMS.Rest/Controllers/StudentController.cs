@@ -83,7 +83,7 @@ namespace SMS.Rest.Controllers
         [HttpGet("verify/{email}/{id?}")]
         public IActionResult VerifyEmailAvailable(string email, int? id)
         {
-            return Ok(_service.GetStudentByEmailAddress(email, id)==null);
+            return Ok(_service.StudentCanUseEmail(email,id));
         }
     }
 }

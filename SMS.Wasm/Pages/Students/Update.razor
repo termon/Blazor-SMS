@@ -5,19 +5,61 @@
 
 <h3 class="mt-4 mb-4">Update Student</h3>
 
-@if(Student == null)
-{    <p>Loading student...</p>
-}
-else
-{
-    <StudentForm Student="Student" OnSave="Save" OnCancel="Cancel"></StudentForm>
-}
+<div class="card shadow shadow p-4 mt-4">
+
+    <EditForm Model="@Student" OnValidSubmit="Save">
+      
+        @* <FluentValidationValidator /> *@
+        <ServerSideApiValidator @ref="apiValidator"/>
+        
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <InputText id="Name" @bind-Value="Student.Name" class="form-control" />
+            <ValidationMessage For="@(() => Student.Name)" />
+        </div>
+        
+        <div class="form-group">
+            <label for="Email">Course</label>
+            <InputText id="Course" @bind-Value="Student.Course" class="form-control" />
+            <ValidationMessage For="@(() => Student.Course)"/>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-8">
+                <label for="Email">Email</label>
+                <InputText id="Email" @bind-Value="Student.Email" class="form-control" />
+                <ValidationMessage For="@(() => Student.Email)"/>
+            </div>
+
+            <div class="form-group col-4">
+                <label for="Age">Age</label>
+                <InputNumber id="Age" @bind-Value="Student.Age" class="form-control" />
+                <ValidationMessage For="@(() => Student.Age)"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="PhotoUrl">Photo Url</label>
+            <InputText id="PhotoUrl" @bind-Value="Student.PhotoUrl" class="form-control" />
+            <ValidationMessage For="@(() => Student.PhotoUrl)"/>
+        </div>
+
+        <div class="form-group mb-4">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+        </div>
+        
+    </EditForm>
+</div>
 
 @code {
+  
+    private ServerSideApiValidator apiValidator;
+
     [Parameter]
     public int Id { get; set; }
 
-    public StudentDto Student { get; set; }
+    public StudentDto Student { get; set; } = new StudentDto();
 
     protected override async Task OnInitializedAsync()
     {      
@@ -36,13 +78,16 @@ else
                 NavigationManager.NavigateTo("students");
                 ToastService.ShowSuccess("Student updated successfully");
             },
-            e => ToastService.ShowError(e.Detail)
+            e => { 
+                apiValidator.ClearErrors();
+                apiValidator.DisplayErrors(e.Errors);
+                //ToastService.ShowError($"Error: {e.Title}");
+            }
         );
     }
 
     private void Cancel()
     {        
         NavigationManager.NavigateTo("students");
-        //ToastService.ShowInfo("Student update cancelled");
     }
 }

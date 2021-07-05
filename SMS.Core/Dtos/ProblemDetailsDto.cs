@@ -11,7 +11,7 @@ namespace SMS.Core.Dtos
         public int? Status { get; set; }
         public string Detail { get; set; }
         public string Instance { get; set; }
-        public IEnumerable<object> Errors { get; set;}
+        //public IEnumerable<object> Errors { get; set;}
+        public Dictionary<string, List<string>> Errors { get; set; } = new Dictionary<string, List<string>>();
     }
-   
 }

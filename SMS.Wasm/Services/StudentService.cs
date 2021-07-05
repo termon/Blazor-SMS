@@ -80,5 +80,11 @@ namespace SMS.Wasm.Services
                 return await response.Content.ReadFromJsonAsync<ProblemDetailsDto>();
             } 
         }
+
+        public async Task<bool> VerifyEmailAvailableAsync(string email, int? id)
+        {
+            return await client.GetFromJsonAsync<bool>($"{url}/api/student/verify/{email}/{id}");
+        }
+        
     }
 }

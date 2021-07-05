@@ -10,8 +10,8 @@
     <div class="card-body">
         <h5 class="card-title">Please enter your details</h5>
         <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
-            @* <DataAnnotationsValidator /> *@
-            <FluentValidator />          
+             <ServerSideApiValidator @ref="apiValidator" />
+             
             <div class="form-group">
                 <label for="email">Email address</label>
                 <InputText Id="email" Class="form-control" @bind-Value="loginModel.Email" />
@@ -28,6 +28,8 @@
 </div>
 
 @code {
+    private ServerSideApiValidator apiValidator;
+
     private LoginDto loginModel = new LoginDto();
     
     private async Task HandleLogin()
@@ -40,7 +42,7 @@
                 toastService.ShowSuccess("Successful Login");  
             },
             error => { 
-                toastService.ShowError(error.Detail); 
+                apiValidator.DisplayErrors(error.Errors);
             }
         );
     }

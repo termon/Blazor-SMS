@@ -55,6 +55,6 @@ public class UserController : ControllerBase
     [HttpGet("verify/{email}/{id?}")]
     public IActionResult VerifyEmailAvailable(string email, int? id)
     {
-        return Ok(_service.GetUserByEmailAddress(email, id)==null);
+        return Ok(_service.UserCanUseEmail(email, id ));
     }
 }

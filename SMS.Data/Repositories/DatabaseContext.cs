@@ -31,8 +31,8 @@ namespace SMS.Data.Repositories
         {
             optionsBuilder               
                 /** use logger to log the sql commands issued by entityframework **/  
-                .LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
+                //.LogTo(Console.WriteLine, LogLevel.Information)
+                //.EnableSensitiveDataLogging()
                 .UseSqlite("Filename=SMS.db");
                 //.UseSqlServer(@"Server=(localdb)\mssqllocaldb; Database=SMS; Trusted_Connection=True;ConnectRetryCount=0");
         }

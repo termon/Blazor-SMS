@@ -44,13 +44,20 @@ namespace SMS.Data.Services
                               .FirstOrDefault(s => s.Id == id);
         }
 
-        public Student GetStudentByEmail(string email, int? id = null)
+        public Student GetStudentByEmailAddress(string email)
         {
-            return db.Students.Include(s => s.Profile)
-                              .Include(s => s.Tickets)
-                              .Include(s => s.StudentModules)
-                              .ThenInclude(sm => sm.Module) // drill down and include each studentmodule module entity
-                              .FirstOrDefault(s => s.Email == email && (id == null || s.Id != id));
+            var s = db.Students
+                      .Include(s => s.Profile)
+                      .Include(s => s.Tickets)
+                      .Include(s => s.StudentModules)
+                      .ThenInclude(sm => sm.Module) // drill down and include each studentmodule module entity
+                      .FirstOrDefault(s => s.Email == email);
+            return s;
+        }
+
+        public Boolean StudentCanUseEmail(string email, int? id = null)
+        {
+            return db.Students.FirstOrDefault(s => s.Email == email && ( id == null || s.Id != id)) == null;
         }
         
         // Add a new student and create a related profile setting the Grade 
@@ -374,22 +381,19 @@ namespace SMS.Data.Services
         }
 
         /// <summary>
-        /// Find a user by EmailAddress (name should be unique)
+        /// Find a user by EmailAddress
         /// </summary>
         /// <param name="email">user EmailAddress</param>
-        /// <returns>The user if found, otherewise null</returns>
-        public User GetUserByEmailAddress(string email, int? id=null)
+        /// <returns>The user if found, otherwise null</returns>
+        public User GetUserByEmailAddress(string email)
         {
-            return db.Users.FirstOrDefault(u => u.EmailAddress == email && ( id == null || u.Id != id));
+            return db.Users.FirstOrDefault(u => u.EmailAddress == email);
         }
         
-        public Student GetStudentByEmailAddress(string email, int? id=null)
+        public Boolean UserCanUseEmail(string email, int? id = null)
         {
-            // check that this email address is not already taken 
-            // or if so then its owned by user with specified id
-            return db.Students.FirstOrDefault(u => u.Email == email && ( id == null || u.Id != id));
+            return db.Users.FirstOrDefault(u => u.EmailAddress == email && ( id == null || u.Id != id)) == null;
         }
-
     }
    
 }

@@ -51,7 +51,7 @@ else
                     NavigationManager.NavigateTo("students");
                     ToastService.ShowSuccess("Student deleted successfully");
                 },
-                e => ToastService.ShowError(e.Detail)
+                e => ToastService.ShowError(e.Title)
             ); 
         }
     }

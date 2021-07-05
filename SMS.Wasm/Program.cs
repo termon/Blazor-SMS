@@ -1,19 +1,16 @@
 using System;
+using System.Text;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http;
-
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
-using SMS.Wasm.Services;
-using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using FluentValidation;
+
+using Blazored.LocalStorage;
 using Blazored.Toast;
 
+using SMS.Wasm.Services;
 namespace SMS.Wasm
 {
     public class Program
@@ -38,14 +35,9 @@ namespace SMS.Wasm
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 
-            // configure fluid validation (Accelist.FluentValidation.Blazor 4.0 only supports FluentValidation < 10)
-            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-
-            // add auth service
+            // add services
             builder.Services.AddScoped<AuthService>();
-     
-            // add student service
-            builder.Services.AddScoped<StudentService>();
+            builder.Services.AddTransient<StudentService>();
            
             await builder.Build().RunAsync();
         }

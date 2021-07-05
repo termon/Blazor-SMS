@@ -9,8 +9,8 @@
     <div class="card-body">
         <h5 class="card-title">Please enter your details</h5>
         <EditForm Model="RegisterModel" OnValidSubmit="HandleRegistration">
-            @* <DataAnnotationsValidator /> *@
-            <FluentValidator />
+            
+            <ServerSideApiValidator @ref="apiValidator"/>           
 
             <div class="form-group">
                 <label for="name">Name!</label>
@@ -39,6 +39,7 @@
 
 @code {
 
+    private ServerSideApiValidator apiValidator;
     private RegisterDto RegisterModel = new RegisterDto();
 
     private async Task HandleRegistration()
@@ -51,7 +52,7 @@
                 toastService.ShowSuccess("Registered Successfully"); 
             },
             e => { 
-                toastService.ShowError(e.Detail);
+                apiValidator.DisplayErrors(e.Errors);
             }
         );
     }

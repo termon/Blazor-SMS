@@ -13,7 +13,7 @@ namespace SMS.Core.Dtos
                 Name = u.Name,
                 EmailAddress = u.EmailAddress,
                 // password is removed for security
-                Role = (int)u.Role,
+                Role = u.Role,
                 Token = u.Token
             };
         }

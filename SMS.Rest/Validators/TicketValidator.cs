@@ -2,7 +2,7 @@ using System;
 using FluentValidation;
 using SMS.Core.Dtos;
 
-namespace SMS.Wasm.Validators
+namespace SMS.Data.Validators
 {
     public class TicketValidator : AbstractValidator<TicketDto>
     {
