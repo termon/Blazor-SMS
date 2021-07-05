@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace SMS.Wasm.Validators
 {
+    // Custom Validator used to display server api validation errors
     public class ServerSideApiValidator : ComponentBase
     {
         private ValidationMessageStore messageStore;
